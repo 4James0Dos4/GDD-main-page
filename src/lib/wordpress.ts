@@ -8,7 +8,7 @@ export type WpCmsItem = {
   excerpt: string;
   date: string;
   link: string;
-  imageUrl?: string;
+  imageUrl?: string | import("astro").ImageMetadata;
   imageAlt?: string;
   imageWidth?: number;
   imageHeight?: number;
