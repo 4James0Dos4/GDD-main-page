@@ -1,0 +1,27 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../../components/mana/ManaSubpageShell.astro";
+import ManaEventsArchive from "../../components/mana/ManaEventsArchive.astro";
+import { getAllWpEvents } from "../../lib/wordpress";
+
+const events = await getAllWpEvents();
+---
+
+<BaseLayout
+  title="Wydarzenia"
+  description="Wydarzenia Fundacji Gospoda Dobrego Dźwięku — warsztaty, koncerty i spotkania od najnowszych do minionych."
+  canonicalPath="/wydarzenia"
+>
+  <ManaSubpageShell
+    kicker="Aktualności"
+    title="Wydarzenia"
+    titleAccent="GDD"
+    subtitle="Od najnowszych do minionych"
+    bodyWidth="full"
+    class="mana-events-archive-page"
+  >
+    <ManaEventsArchive events={events} showHeader={false} />
+  </ManaSubpageShell>
+</BaseLayout>

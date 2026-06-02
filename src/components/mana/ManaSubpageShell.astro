@@ -1,0 +1,40 @@
+---
+import ManaSubpageHero from "./ManaSubpageHero.astro";
+
+interface Props {
+  kicker?: string;
+  title: string;
+  titleAccent?: string;
+  subtitle?: string;
+  /** narrow 720px · medium 960px · wide 1040px · full brak limitu */
+  bodyWidth?: "narrow" | "medium" | "wide" | "full";
+  class?: string;
+}
+
+const {
+  kicker,
+  title,
+  titleAccent,
+  subtitle,
+  bodyWidth = "medium",
+  class: className,
+} = Astro.props;
+
+const bodyClass =
+  bodyWidth === "narrow"
+    ? "mana-subpage__body mana-subpage__body--narrow"
+    : bodyWidth === "wide"
+      ? "mana-subpage__body mana-subpage__body--wide"
+      : bodyWidth === "full"
+        ? "mana-subpage__body"
+        : "mana-subpage__body mana-subpage__body--medium";
+---
+
+<section class:list={["mana-subpage mana-section-pad pt-24 md:pt-28", className]}>
+  <div class="mana-subpage__container container mx-auto max-w-[1300px] px-4 sm:px-6">
+    <ManaSubpageHero kicker={kicker} title={title} titleAccent={titleAccent} subtitle={subtitle} />
+    <div class={bodyClass}>
+      <slot />
+    </div>
+  </div>
+</section>

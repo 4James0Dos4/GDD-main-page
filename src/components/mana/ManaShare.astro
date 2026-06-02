@@ -1,0 +1,65 @@
+---
+interface Props {
+  url: string;
+  title: string;
+  downloadUrl?: string;
+  downloadLabel?: string;
+}
+
+const { url, title, downloadUrl, downloadLabel = "Pobierz plakat" } = Astro.props;
+const encodedUrl = encodeURIComponent(url);
+const encodedTitle = encodeURIComponent(title);
+
+const shareLinks = [
+  {
+    label: "Udostępnij na Facebooku",
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    icon: "fa-brands fa-facebook-f",
+  },
+  {
+    label: "Udostępnij na X",
+    href: `https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`,
+    icon: "fa-brands fa-x-twitter",
+  },
+  {
+    label: "Udostępnij przez WhatsApp",
+    href: `https://api.whatsapp.com/send?text=${encodedTitle}%20${encodedUrl}`,
+    icon: "fa-brands fa-whatsapp",
+  },
+];
+---
+
+<div class="mana-share">
+  <p class="mana-share-label">Udostępnij:</p>
+  <ul class="mana-share-list">
+    {
+      shareLinks.map((item) => (
+        <li>
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={item.label}
+            class="mana-share-btn"
+          >
+            <i class={item.icon} aria-hidden="true"></i>
+          </a>
+        </li>
+      ))
+    }
+    {
+      downloadUrl ? (
+        <li>
+          <a
+            href={downloadUrl}
+            download
+            aria-label={downloadLabel}
+            class="mana-share-btn"
+          >
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
+          </a>
+        </li>
+      ) : null
+    }
+  </ul>
+</div>

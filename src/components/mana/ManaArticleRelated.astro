@@ -1,0 +1,62 @@
+---
+import type { WpArticle } from "../../lib/wordpress";
+import { formatArticleDate } from "../../lib/articleUtils";
+
+interface Props {
+  articles: WpArticle[];
+}
+
+const { articles } = Astro.props;
+---
+
+{
+  articles.length ? (
+    <section class="mana-cms-related mana-article-related" aria-labelledby="related-articles-heading">
+      <div class="mana-cms-related__heading">
+        <hr class="mana-article-rule" />
+        <h2 id="related-articles-heading" class="mana-cms-related-title">
+          Poznaj nasze inne artykuły
+        </h2>
+        <hr class="mana-article-rule" />
+      </div>
+
+      <div class="mana-cms-related-grid">
+        {
+          articles.map((item) => (
+            <article class="mana-cms-related-card mana-article-card">
+              {
+                item.imageUrl ? (
+                  <a href={item.link} class="mana-cms-related-card__thumb" aria-label={`Czytaj artykuł: ${item.title}`}>
+                    <img
+                      src={item.imageUrl}
+                      srcset={item.imageSrcSet}
+                      alt={item.imageAlt || item.title}
+                      width={item.imageWidth}
+                      height={item.imageHeight}
+                      loading="lazy"
+                      decoding="async"
+                      sizes="(min-width: 768px) 50vw, 100vw"
+                    />
+                  </a>
+                ) : null
+              }
+              <div class="mana-cms-related-card__body">
+                {
+                  item.date ? (
+                    <p class="mana-cms-related-card__date">{formatArticleDate(item.date)}</p>
+                  ) : null
+                }
+                <h3 class="mana-cms-related-card__title">
+                  <a href={item.link}>{item.title}</a>
+                </h3>
+                <a href={item.link} class="mana-cms-related-card__link">
+                  Czytaj więcej
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  ) : null
+}

@@ -1,0 +1,144 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ManaCmsContent from "../../components/mana/ManaCmsContent.astro";
+import ManaEventRelated from "../../components/mana/ManaEventRelated.astro";
+import ManaShare from "../../components/mana/ManaShare.astro";
+import { siteMeta } from "../../data/gddHome";
+import { formatEventBadge, formatEventMetaLine } from "../../lib/eventUtils";
+import { getRelatedWpEvents, getWpEventBySlug } from "../../lib/wordpress";
+
+const { slug } = Astro.params;
+const event = slug ? await getWpEventBySlug(slug) : null;
+
+if (!event) {
+  return Astro.rewrite("/404");
+}
+
+const relatedEvents = await getRelatedWpEvents(event.slug, 2);
+
+function formatEventDateMana(value?: string): string {
+  if (!value) return "";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+
+  return new Intl.DateTimeFormat("pl-PL", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(parsed);
+}
+
+const dateLabel = formatEventDateMana(event.eventDate || event.date);
+const metaLine = formatEventMetaLine(event.eventDate, event.eventLocation, event.date);
+const badge = formatEventBadge(event.eventDate || event.date);
+const siteOrigin = Astro.site?.href?.replace(/\/$/, "") || siteMeta.siteUrl;
+const shareUrl = new URL(event.link, siteOrigin).href;
+---
+
+<BaseLayout
+  title={event.title}
+  description={event.excerpt}
+  canonicalPath={event.link}
+  ogImage={event.imageUrl || "/og-default.jpg"}
+  mainClass="pt-24 md:pt-28"
+>
+  <section class="mana-event-detail mana-cms-page mana-section-pad">
+    <div class="container mx-auto max-w-[1040px] px-4 sm:px-6">
+      <div class="mana-cms-detail-grid mana-event-detail__grid">
+        <div class="mana-cms-detail-main">
+          <nav class="mana-event-detail__mobile-nav" aria-label="Nawigacja wydarzenia">
+            <a href="/wydarzenia" class="mana-event-detail__back">
+              <span aria-hidden="true">‹</span> Wydarzenia
+            </a>
+          </nav>
+
+          <article class="mana-event-brochure">
+            {
+              event.imageUrl ? (
+                <figure class="mana-event-brochure__poster">
+                  <a
+                    href={event.imageUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Otwórz plakat w pełnym rozmiarze"
+                  >
+                    <img
+                      src={event.imageUrl}
+                      srcset={event.imageSrcSet}
+                      alt={event.imageAlt || `Plakat wydarzenia: ${event.title}`}
+                      class="mana-event-brochure__poster-img"
+                      width={event.imageWidth || 460}
+                      height={event.imageHeight || 650}
+                      loading="eager"
+                      fetchpriority="high"
+                      decoding="async"
+                      sizes="(min-width: 768px) 260px, 100vw"
+                    />
+                  </a>
+                </figure>
+              ) : (
+                <div class="mana-event-brochure__poster mana-event-brochure__poster--empty" aria-hidden="true">
+                  <i class="fa-solid fa-calendar-days"></i>
+                </div>
+              )
+            }
+
+            <div class="mana-event-brochure__content">
+              <div class="mana-event-detail__meta-mobile">
+                <span class="mana-event-detail__date-badge">
+                  {badge.month} {badge.day}
+                </span>
+                {dateLabel ? <span class="mana-event-detail__date-full">{dateLabel}</span> : null}
+                {event.eventLocation ? (
+                  <span class="mana-event-detail__location">{event.eventLocation}</span>
+                ) : null}
+              </div>
+
+              <h1 class="mana-event-brochure__title">{event.title}</h1>
+
+              {metaLine ? <p class="mana-event-brochure__meta">{metaLine}</p> : null}
+
+              <ManaCmsContent html={event.contentHtml} />
+
+              <ManaShare url={shareUrl} title={event.title} downloadUrl={event.imageUrl} />
+            </div>
+          </article>
+        </div>
+
+        <aside class="mana-cms-detail-sidebar mana-event-detail__sidebar" aria-label="Informacje o wydarzeniu">
+          <div class="mana-cms-detail-sidebar__inner">
+            <hr class="mana-article-rule" />
+            <p class="mana-cms-detail-sidebar__title">{event.title}</p>
+            <hr class="mana-article-rule" />
+
+            <div>
+              <p class="mana-cms-detail-sidebar__label">Data i miejsce</p>
+              <div class="mana-cms-detail-sidebar__pills">
+                <span class="mana-cms-pill">
+                  {badge.month} {badge.day}
+                  {dateLabel ? ` · ${dateLabel}` : ""}
+                </span>
+                {event.eventLocation ? <span class="mana-cms-pill">{event.eventLocation}</span> : null}
+              </div>
+
+              {metaLine ? <p class="mana-event-brochure__meta">{metaLine}</p> : null}
+
+              <p class="mana-cms-detail-sidebar__label">Wydarzenia</p>
+              <a href="/wydarzenia" class="mana-cms-detail-sidebar__back">
+                <span aria-hidden="true">‹</span> Wróć
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <ManaEventRelated events={relatedEvents} />
+
+      <p class="mana-cms-footer-cta">
+        <a href="/wydarzenia" class="mana-cms-footer-cta__link">Wszystkie wydarzenia</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

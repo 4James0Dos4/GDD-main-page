@@ -1,0 +1,98 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../components/mana/ManaSubpageShell.astro";
+import ManaRichText from "../components/mana/ManaRichText.astro";
+import { ofertaPage } from "../data/gddOferta";
+import { siteMeta } from "../data/gddHome";
+
+const page = ofertaPage;
+const mailtoWorkshops = `mailto:${page.workshopsEmail}?subject=${encodeURIComponent(page.workshopsEmailSubject)}`;
+---
+
+<BaseLayout
+  title="Oferta warsztatów"
+  description="„Dźwięk od kuchni” — dwudniowe warsztaty realizacji dźwięku studyjnego i estradowego w Warszawie. Kameralna grupa do 12 osób."
+  canonicalPath="/oferta"
+>
+  <ManaSubpageShell
+    kicker="Warsztaty"
+    title={page.heroTitle}
+    subtitle={page.heroSubtitle}
+    bodyWidth="medium"
+    class="mana-oferta-page"
+  >
+    <p class="mana-pill">
+      <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+      {page.dateLocation}
+    </p>
+
+    <ul class="mana-oferta-highlights" role="list">
+      {page.introHighlights.map((text) => (
+        <li class="mana-oferta-highlight">
+          <ManaRichText text={text} variant="bold-markers" />
+        </li>
+      ))}
+    </ul>
+
+    <article class="mana-content-section">
+      <h2 class="mana-content-section__title">{page.whyHeading}</h2>
+      <ul class="mana-content-list mana-content-list--checks">
+        {page.whyItems.map((item) => (
+          <li>
+            <ManaRichText text={item} variant="lead-dash" />
+          </li>
+        ))}
+      </ul>
+    </article>
+
+    <article class="mana-content-section">
+      <h2 class="mana-content-section__title">{page.audienceHeading}</h2>
+      <ul class="mana-content-list mana-content-list--tight">
+        {page.audienceItems.map((item) => <li>{item}</li>)}
+      </ul>
+    </article>
+
+    <article class="mana-content-section">
+      <h2 class="mana-content-section__title">{page.whenWhereHeading}</h2>
+      <ul class="mana-content-list mana-content-list--tight">
+        {page.whenWhereItems.map((item) => (
+          <li>
+            <ManaRichText text={item} variant="bold-markers" />
+          </li>
+        ))}
+      </ul>
+    </article>
+
+    <section class="mana-oferta-signup" aria-labelledby="oferta-signup-heading">
+      <h2 class="mana-content-section__title" id="oferta-signup-heading">{page.signupHeading}</h2>
+      <div class="mana-oferta-signup__actions">
+        <a href={mailtoWorkshops} class="mana-join-action mana-join-action--primary mana-oferta-signup__action">
+          <span class="mana-join-action__icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span>
+          <span class="mana-join-action__body">
+            <span class="mana-join-action__label">E-mail · temat: {page.workshopsEmailSubject}</span>
+            <span class="mana-join-action__value mana-join-action__value--email" translate="no">{page.workshopsEmail}</span>
+          </span>
+          <span class="mana-join-action__cta">Napisz</span>
+        </a>
+        <a href={`tel:${siteMeta.contact.phoneTel}`} class="mana-join-action mana-oferta-signup__action">
+          <span class="mana-join-action__icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
+          <span class="mana-join-action__body">
+            <span class="mana-join-action__label">Telefon</span>
+            <span class="mana-join-action__value" translate="no">tel. {siteMeta.contact.phoneDisplay}</span>
+          </span>
+          <span class="mana-join-action__cta">Zadzwoń</span>
+        </a>
+      </div>
+      <p class="mana-oferta-signup__hint">{page.formHint} — <a href="/" class="mana-link">{siteMeta.siteDomainDisplay}</a></p>
+      <p class="mana-oferta-signup__note">{page.signupNote}</p>
+    </section>
+
+    <div class="mana-page-links">
+      <a href="/dokumenty#regulamin-stacjonarny" class="mana-page-links__item">Regulamin warsztatów stacjonarnych</a>
+      <a href="/dokumenty#regulamin-online" class="mana-page-links__item">Regulamin warsztatów online</a>
+      <a href="/numer-konta-bankowego" class="mana-page-links__item">Numer konta — darowizna</a>
+    </div>
+  </ManaSubpageShell>
+</BaseLayout>

@@ -1,0 +1,28 @@
+---
+interface Props {
+  active: "events" | "articles";
+}
+
+const { active } = Astro.props;
+---
+
+<ul class="mana-cms-cross-nav">
+  <li>
+    <a
+      href="/wydarzenia"
+      class="mana-cms-cross-nav__link"
+      aria-current={active === "events" ? "page" : undefined}
+    >
+      Wydarzenia
+    </a>
+  </li>
+  <li>
+    <a
+      href="/artykuly"
+      class="mana-cms-cross-nav__link"
+      aria-current={active === "articles" ? "page" : undefined}
+    >
+      Artykuły
+    </a>
+  </li>
+</ul>

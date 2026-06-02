@@ -1,0 +1,27 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../../components/mana/ManaSubpageShell.astro";
+import ManaArticlesArchive from "../../components/mana/ManaArticlesArchive.astro";
+import { getAllWpArticles } from "../../lib/wordpress";
+
+const articles = await getAllWpArticles();
+---
+
+<BaseLayout
+  title="Artykuły"
+  description="Artykuły Fundacji Gospoda Dobrego Dźwięku — wiedza o dźwięku, muzyce i edukacji."
+  canonicalPath="/artykuly"
+>
+  <ManaSubpageShell
+    kicker="O nas"
+    title="Blog"
+    titleAccent="GDD"
+    subtitle="Wiedza o dźwięku, muzyce i edukacji"
+    bodyWidth="full"
+    class="mana-articles-archive-page"
+  >
+    <ManaArticlesArchive articles={articles} showHeader={false} />
+  </ManaSubpageShell>
+</BaseLayout>

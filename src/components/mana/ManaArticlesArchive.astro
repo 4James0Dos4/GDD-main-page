@@ -1,0 +1,181 @@
+---
+import ManaCmsSidebar from "./ManaCmsSidebar.astro";
+import type { WpArticle } from "../../lib/wordpress";
+import {
+  articleCategorySlugsAttr,
+  collectArticleCategories,
+  truncateExcerpt,
+} from "../../lib/articleUtils";
+
+interface Props {
+  articles: WpArticle[];
+  emptyMessage?: string;
+  showHeader?: boolean;
+}
+
+const {
+  articles,
+  emptyMessage = "Brak opublikowanych artykułów. Dodaj wpis w panelu WordPress CMS.",
+  showHeader = true,
+} = Astro.props;
+
+const categories = collectArticleCategories(articles);
+---
+
+<section class="mana-articles-blog">
+  {
+    showHeader ? (
+      <header class="mana-cms-archive-hero">
+        <h1 class="mana-cms-archive-title">Blog GDD</h1>
+        <p class="mana-cms-archive-subtitle">Wiedza o dźwięku, muzyce i edukacji</p>
+        <div class="mana-cms-archive-hero__rule" aria-hidden="true"></div>
+      </header>
+    ) : null
+  }
+
+  {
+    articles.length ? (
+      <div class="mana-cms-layout">
+        <ManaCmsSidebar active="articles" filterHeading="Kategorie artykułów">
+          <ul slot="filters" class="mana-cms-sidebar__filters mana-cms-filter-scroll">
+            <li>
+              <button
+                type="button"
+                data-filter="all"
+                class="mana-cms-filter-btn is-active"
+                aria-pressed="true"
+              >
+                Wszystkie
+              </button>
+            </li>
+            {
+              categories.map((category) => (
+                <li>
+                  <button
+                    type="button"
+                    data-filter={category.slug}
+                    class="mana-cms-filter-btn"
+                    aria-pressed="false"
+                  >
+                    {category.label}
+                  </button>
+                </li>
+              ))
+            }
+          </ul>
+        </ManaCmsSidebar>
+
+        <div class="mana-cms-main">
+          <div id="mana-articles-posts" class="mana-articles-list__items">
+            {
+              articles.map((article) => (
+                <article
+                  class="mana-article-list-item"
+                  data-filter={articleCategorySlugsAttr(article)}
+                >
+                  <div class="mana-article-list-row">
+                    {
+                      article.imageUrl ? (
+                        <a
+                          href={article.link}
+                          class="mana-article-list-image"
+                          aria-label={`Czytaj artykuł: ${article.title}`}
+                        >
+                          <img
+                            src={article.imageUrl}
+                            srcset={article.imageSrcSet}
+                            alt={article.imageAlt || article.title}
+                            width={article.imageWidth}
+                            height={article.imageHeight}
+                            loading="lazy"
+                            decoding="async"
+                            sizes="(min-width: 640px) 250px, 100vw"
+                          />
+                        </a>
+                      ) : (
+                        <div class="mana-article-list-image mana-article-list-image--empty" aria-hidden="true">
+                          <i class="fa-solid fa-newspaper"></i>
+                        </div>
+                      )
+                    }
+
+                    <div class="mana-article-list-content">
+                      {
+                        article.categories?.[0]?.name || article.category ? (
+                          <p class="mana-article-list-category">
+                            {article.categories?.[0]?.name || article.category}
+                          </p>
+                        ) : null
+                      }
+                      <h2 class="mana-article-list-title">
+                        <a href={article.link} title={article.title}>{article.title}</a>
+                      </h2>
+                      {
+                        article.excerpt ? (
+                          <p class="mana-article-list-excerpt">
+                            <span class="mana-article-list-excerpt__text">
+                              {truncateExcerpt(article.excerpt)}
+                            </span>
+                            <a href={article.link} class="mana-article-list-more">
+                              Czytaj więcej
+                            </a>
+                          </p>
+                        ) : (
+                          <a href={article.link} class="mana-article-list-more mana-article-list-more--solo">
+                            Czytaj więcej
+                          </a>
+                        )
+                      }
+                    </div>
+                  </div>
+                </article>
+              ))
+            }
+          </div>
+          <p id="mana-articles-filter-empty" class="mana-cms-filter-empty" hidden>
+            Brak artykułów w wybranej kategorii.
+          </p>
+        </div>
+      </div>
+    ) : (
+      <p class="mana-cms-archive-empty">{emptyMessage}</p>
+    )
+  }
+</section>
+
+<script is:inline>
+  (function () {
+    var buttons = document.querySelectorAll(".mana-articles-blog .mana-cms-filter-btn");
+    var items = document.querySelectorAll(".mana-article-list-item");
+    var emptyMsg = document.getElementById("mana-articles-filter-empty");
+    if (!buttons.length || !items.length) return;
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var filter = btn.getAttribute("data-filter") || "all";
+        var visibleCount = 0;
+
+        buttons.forEach(function (b) {
+          var active = b === btn;
+          b.classList.toggle("is-active", active);
+          b.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+
+        items.forEach(function (item) {
+          var raw = item.getAttribute("data-filter") || "";
+          var itemFilters = raw.split(/\s+/).filter(Boolean);
+          var show =
+            filter === "all" ||
+            itemFilters.indexOf(filter) !== -1;
+
+          item.hidden = !show;
+          if (show) visibleCount += 1;
+        });
+
+        if (emptyMsg) {
+          emptyMsg.hidden = visibleCount > 0;
+        }
+      });
+    });
+  })();
+</script>

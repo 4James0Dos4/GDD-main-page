@@ -1,0 +1,115 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaStatusShell from "../components/mana/ManaStatusShell.astro";
+import { fulfillCheckoutSession } from "../lib/fulfillment";
+import { getStripe } from "../lib/stripe";
+import { getDownloadTokenTtlHours, isStripeSecretKeyConfigured } from "../lib/stripeEnv";
+
+const sessionId = Astro.url.searchParams.get("session_id")?.trim();
+const ttlHours = getDownloadTokenTtlHours();
+const ttlNote =
+  ttlHours === 1
+    ? "1 godzinę"
+    : ttlHours >= 2 && ttlHours <= 4
+      ? `${ttlHours} godziny`
+      : `${ttlHours} godzin`;
+
+type FulfillState =
+  | { status: "idle" }
+  | { status: "ok"; emailNote: string }
+  | { status: "skipped"; emailNote: string }
+  | { status: "error"; message: string; showResendLink: boolean };
+
+let fulfill: FulfillState = { status: "idle" };
+
+if (sessionId) {
+  if (!isStripeSecretKeyConfigured()) {
+    fulfill = {
+      status: "error",
+      message: "Brak konfiguracji Stripe (STRIPE_SECRET_KEY).",
+      showResendLink: false,
+    };
+  } else {
+    try {
+      const stripe = getStripe();
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      const result = await fulfillCheckoutSession(session, Astro.request);
+
+      if (result.ok && result.emailSent) {
+        const emailNote = result.skipped
+          ? "Link do pobrania wysłaliśmy ponownie na Twój e-mail."
+          : "Link do pobrania wysłaliśmy na adres e-mail podany przy płatności.";
+        fulfill = result.skipped
+          ? { status: "skipped", emailNote }
+          : { status: "ok", emailNote };
+      } else if (result.ok && !result.emailSent) {
+        fulfill = {
+          status: "error",
+          message:
+            result.emailError ||
+            "Nie udało się wysłać e-maila z linkiem. Skonfiguruj RESEND_API_KEY lub spróbuj ponownie.",
+          showResendLink: true,
+        };
+      } else {
+        fulfill = {
+          status: "error",
+          message: result.reason || "Nie udało się przygotować dostawy audiobooka.",
+          showResendLink: !!sessionId,
+        };
+      }
+    } catch (error) {
+      console.error("[sukces:fulfill]", error);
+      fulfill = {
+        status: "error",
+        message: "Nie udało się zweryfikować płatności.",
+        showResendLink: !!sessionId,
+      };
+    }
+  }
+}
+---
+
+<BaseLayout title="Zamówienie opłacone" canonicalPath="/sukces">
+  <ManaStatusShell kicker="Sklep cyfrowy" title="Dziękujemy za zakup">
+    {
+      fulfill.status === "ok" || fulfill.status === "skipped" ? (
+        <>
+          <p class="mana-prose mt-6">{fulfill.emailNote}</p>
+          <p class="mana-prose mana-prose--muted mt-4">
+            Sprawdź skrzynkę odbiorczą oraz folder spam/oferty. Link jest ważny przez {ttlNote} i
+            działa jednorazowo — pobierz plik z wiadomości e-mail.
+          </p>
+        </>
+      ) : fulfill.status === "error" ? (
+        <>
+          <p class="mana-prose mt-6">Płatność mogła przejść, ale wystąpił problem z wysyłką linku na e-mail.</p>
+          <p class="mana-prose mana-prose--warning mt-4">{fulfill.message}</p>
+          {fulfill.showResendLink ? (
+            <p class="mana-prose mt-4">
+              <a href={`/pobierz-link?session_id=${encodeURIComponent(sessionId ?? "")}`} class="mana-link">
+                Wyślij link ponownie
+              </a>
+            </p>
+          ) : null}
+          <p class="mana-prose mana-prose--muted mt-4">
+            Napisz do nas przez stopkę strony — podaj adres e-mail z zamówienia.
+          </p>
+        </>
+      ) : (
+        <>
+          <p class="mana-prose mt-6">
+            Jeśli płatność została zakończona pomyślnie, link do pobrania audiobooka wyślemy na adres
+            e-mail podany w Stripe.
+          </p>
+          <p class="mana-prose mana-prose--muted mt-4">
+            Sprawdź folder spam/oferty. Link jest ważny przez {ttlNote} i działa jednorazowo.
+          </p>
+        </>
+      )
+    }
+
+    <a href="/audiobooki" class="mana-btn-solid mt-10 inline-flex">Wróć do sklepu</a>
+  </ManaStatusShell>
+</BaseLayout>

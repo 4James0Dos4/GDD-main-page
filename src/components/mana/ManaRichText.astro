@@ -1,0 +1,30 @@
+---
+import {
+  escapeHtml,
+  formatEachSubject,
+  formatLabelColon,
+  formatLeadDash,
+  formatSimpleBold,
+} from "../../lib/formatReadable";
+
+type Variant = "plain" | "bold-markers" | "lead-dash" | "label-colon" | "each-subject";
+
+interface Props {
+  text: string;
+  variant?: Variant;
+}
+
+const { text, variant = "plain" } = Astro.props;
+
+const formatters: Record<Variant, (value: string) => string> = {
+  plain: escapeHtml,
+  "bold-markers": formatSimpleBold,
+  "lead-dash": formatLeadDash,
+  "label-colon": formatLabelColon,
+  "each-subject": formatEachSubject,
+};
+
+const html = formatters[variant](text);
+---
+
+<span class="mana-rich-text" set:html={html} />

@@ -1,0 +1,25 @@
+---
+import ManaSubpageShell from "./ManaSubpageShell.astro";
+
+interface Props {
+  kicker?: string;
+  title: string;
+  titleAccent?: string;
+  subtitle?: string;
+}
+
+const { kicker, title, titleAccent, subtitle } = Astro.props;
+---
+
+<ManaSubpageShell
+  kicker={kicker}
+  title={title}
+  titleAccent={titleAccent}
+  subtitle={subtitle}
+  bodyWidth="narrow"
+  class="mana-status-page"
+>
+  <div class="mana-status-body">
+    <slot />
+  </div>
+</ManaSubpageShell>

@@ -1,0 +1,71 @@
+---
+import { siteMeta } from "../../data/gddHome";
+import ManaCmsCrossNav from "./ManaCmsCrossNav.astro";
+
+interface Props {
+  active: "events" | "articles";
+  filterHeading: string;
+}
+
+const { active, filterHeading } = Astro.props;
+
+const contactLinks = [
+  {
+    href: `mailto:${siteMeta.email}`,
+    icon: "fa-solid fa-envelope",
+    label: `Wyślij e-mail do ${siteMeta.siteName}`,
+  },
+  {
+    href: "/#kontakt",
+    icon: "fa-solid fa-address-card",
+    label: "Przejdź do sekcji kontakt",
+  },
+  {
+    href: siteMeta.fullSiteUrl,
+    icon: "fa-solid fa-globe",
+    label: `Otwórz stronę ${siteMeta.siteDomainDisplay}`,
+    external: true,
+  },
+];
+---
+
+<aside class="mana-cms-sidebar" aria-label="Filtry i nawigacja">
+  <div class="mana-cms-sidebar__block mana-cms-sidebar__block--filters">
+    <hr class="mana-article-rule mana-cms-sidebar__rule" />
+    <p class="mana-cms-sidebar__heading">{filterHeading}</p>
+    <hr class="mana-article-rule mana-cms-sidebar__rule" />
+    <slot name="filters" />
+  </div>
+
+  <div class="mana-cms-sidebar__footer">
+    <div class="mana-cms-sidebar__block mana-cms-sidebar__block--nav">
+      <hr class="mana-article-rule mana-cms-sidebar__rule" />
+      <p class="mana-cms-sidebar__heading">Przeglądaj</p>
+      <hr class="mana-article-rule mana-cms-sidebar__rule" />
+      <ManaCmsCrossNav active={active} />
+    </div>
+
+    <div class="mana-cms-sidebar__block mana-cms-sidebar__block--contact">
+      <hr class="mana-article-rule mana-cms-sidebar__rule" />
+      <p class="mana-cms-sidebar__heading">Bądźmy w kontakcie</p>
+      <hr class="mana-article-rule mana-cms-sidebar__rule" />
+      <ul class="mana-cms-sidebar__social">
+        {
+          contactLinks.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="mana-cms-sidebar__social-link"
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
+                aria-label={item.label}
+              >
+                <i class={item.icon} aria-hidden="true"></i>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</aside>

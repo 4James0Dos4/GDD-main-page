@@ -1,0 +1,113 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../components/mana/ManaSubpageShell.astro";
+import ManaRichText from "../components/mana/ManaRichText.astro";
+import { proToolsPage } from "../data/gddProTools";
+import { siteMeta } from "../data/gddHome";
+
+const page = proToolsPage;
+const mailto = `mailto:${page.workshopsEmail}?subject=${encodeURIComponent(page.workshopsEmailSubject)}`;
+---
+
+<BaseLayout
+  title="Warsztaty Pro Tools"
+  description="Warsztaty Pro Tools online — nauka obsługi DAW od podstaw. Program 24 modułów, indywidualne podejście. Gospoda Dobrego Dźwięku."
+  canonicalPath="/warsztaty-pro-tools"
+>
+  <ManaSubpageShell
+    kicker="Warsztaty"
+    title={page.heroTitle}
+    subtitle={page.heroSubtitle}
+    bodyWidth="medium"
+    class="mana-protools-page"
+  >
+    <p class="mana-pill">
+      <i class="fa-solid fa-laptop" aria-hidden="true"></i>
+      {page.formatBadge}
+    </p>
+
+    <article class="mana-content-section">
+      <h2 class="mana-content-section__title">{page.whyHeading}</h2>
+      <div class="mana-content-prose">
+        {page.whyParagraphs.map((p) => (
+          <p>
+            <ManaRichText text={p} variant="bold-markers" />
+          </p>
+        ))}
+      </div>
+    </article>
+
+    <article class="mana-content-section">
+      <h2 class="mana-content-section__title">{page.audienceHeading}</h2>
+      <div class="mana-content-prose">
+        {page.audienceParagraphs.map((p) => (
+          <p>
+            <ManaRichText text={p} variant="bold-markers" />
+          </p>
+        ))}
+      </div>
+    </article>
+
+    <section class="mana-content-section" aria-labelledby="protools-program-heading">
+      <h2 class="mana-content-section__title" id="protools-program-heading">{page.programHeading}</h2>
+      <p class="mana-protools-program-note">
+        <strong>Warsztaty skrócone:</strong> godzinne i sześciogodzinne dopasowane do indywidualnych potrzeb kursantów
+        (zobacz: <a href="/" class="mana-link">strona główna</a>).
+      </p>
+      <ol class="mana-protools-curriculum">{page.programItems.map((item) => <li>{item}</li>)}</ol>
+    </section>
+
+    <section class="mana-protools-signup" aria-labelledby="protools-signup-heading">
+      <h2 class="mana-content-section__title" id="protools-signup-heading">{page.signupHeading}</h2>
+      <div class="mana-protools-signup__actions">
+        <a href={mailto} class="mana-join-action mana-join-action--primary mana-protools-signup__action">
+          <span class="mana-join-action__icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span>
+          <span class="mana-join-action__body">
+            <span class="mana-join-action__label">E-mail · podaj stopień zaawansowania</span>
+            <span class="mana-join-action__value mana-join-action__value--email" translate="no">{page.workshopsEmail}</span>
+          </span>
+          <span class="mana-join-action__cta">Napisz</span>
+        </a>
+        <a href={`tel:${siteMeta.contact.phoneTel}`} class="mana-join-action mana-protools-signup__action">
+          <span class="mana-join-action__icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
+          <span class="mana-join-action__body">
+            <span class="mana-join-action__label">Telefon</span>
+            <span class="mana-join-action__value" translate="no">tel. {siteMeta.contact.phoneDisplay}</span>
+          </span>
+          <span class="mana-join-action__cta">Zadzwoń</span>
+        </a>
+      </div>
+      <aside class="mana-protools-notice" aria-label="Uwaga przy zapisie">
+        <p class="mana-protools-notice__label">Uwaga</p>
+        <p class="mana-protools-notice__text">
+          <ManaRichText text={page.signupNotice} variant="bold-markers" />
+        </p>
+      </aside>
+    </section>
+
+    <section class="mana-content-section" aria-labelledby="protools-projects-heading">
+      <h2 class="mana-content-section__title" id="protools-projects-heading">{page.projectsHeading}</h2>
+      <ul class="mana-protools-projects" role="list">
+        {
+          page.projects.map((project) => (
+            <li class="mana-protools-project">
+              <h3 class="mana-protools-project__title">{project.title}</h3>
+              <p class="mana-protools-project__desc">{project.description}</p>
+              <a href={project.linkUrl} class="mana-protools-project__link" target="_blank" rel="noopener noreferrer">
+                {project.linkLabel}<span aria-hidden="true"> →</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <div class="mana-page-links">
+      <a href="/dokumenty#regulamin-online" class="mana-page-links__item">Regulamin warsztatów online</a>
+      <a href="/oferta" class="mana-page-links__item">Oferta warsztatów stacjonarnych</a>
+      <a href="/mix-mastering" class="mana-page-links__item">Mix / mastering</a>
+    </div>
+  </ManaSubpageShell>
+</BaseLayout>

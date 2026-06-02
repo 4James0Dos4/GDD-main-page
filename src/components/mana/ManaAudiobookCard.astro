@@ -1,0 +1,33 @@
+---
+import type { AudiobookProduct } from "../../data/audiobooks";
+
+interface Props {
+  book: AudiobookProduct;
+}
+
+const { book } = Astro.props;
+---
+
+<article class="mana-card mana-product-card">
+  <div class="mana-product-card__media" role="img" aria-label={book.coverAlt}>
+    <i class="fa-solid fa-headphones mana-product-card__media-icon" aria-hidden="true"></i>
+  </div>
+  <div class="mana-product-card__body">
+    <div>
+      <p class="mana-product-card__duration">{book.duration}</p>
+      <h2 class="mana-title mana-product-card__title">{book.title}</h2>
+      <p class="mana-product-card__author">{book.author}</p>
+      <p class="mana-prose mana-product-card__desc">{book.description}</p>
+    </div>
+    <div class="mana-product-card__footer">
+      <p class="mana-product-card__price">{book.priceLabel}</p>
+      <button
+        type="button"
+        class="buy-audiobook mana-btn-solid px-5 py-3"
+        data-product-id={book.id}
+      >
+        Kup teraz
+      </button>
+    </div>
+  </div>
+</article>

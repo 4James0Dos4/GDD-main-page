@@ -1,0 +1,21 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaLegalShell from "../components/mana/ManaLegalShell.astro";
+---
+
+<BaseLayout title="Polityka cookies" canonicalPath="/polityka-cookies">
+  <ManaLegalShell title="Polityka cookies">
+    <p>Serwis wykorzystuje pliki cookies <strong>niezbędne do działania strony</strong> oraz obsługi płatności Stripe.</p>
+    <h2>Rodzaje cookies</h2>
+    <ul>
+      <li><strong>niezbędne</strong> — utrzymanie sesji, bezpieczeństwo, zapis zgody cookies,</li>
+      <li><strong>funkcjonalne Stripe</strong> — przekierowanie do bezpiecznej płatności,</li>
+    </ul>
+    <h2>Zarządzanie zgodą</h2>
+    <p>
+      Zgodę możesz wyrazić w <strong>banerze cookies</strong>. Ustawienia przeglądarki pozwalają też ograniczyć lub usunąć cookies.
+    </p>
+  </ManaLegalShell>
+</BaseLayout>

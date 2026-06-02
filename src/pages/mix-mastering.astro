@@ -1,0 +1,106 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../components/mana/ManaSubpageShell.astro";
+import ManaRichText from "../components/mana/ManaRichText.astro";
+import { formatMixPackageFeature } from "../lib/formatReadable";
+import { mixMasteringPage } from "../data/gddMixMastering";
+import { siteMeta } from "../data/gddHome";
+
+const page = mixMasteringPage;
+---
+
+<BaseLayout
+  title="Mix / Mastering"
+  description="Profesjonalny mix i mastering nagrań muzycznych — realizacja online, indywidualne konsultacje. Gospoda Dobrego Dźwięku."
+  canonicalPath="/mix-mastering"
+>
+  <ManaSubpageShell
+    kicker="Usługi"
+    title={page.heroTitle}
+    subtitle={page.heroSubtitle}
+    bodyWidth="medium"
+    class="mana-mix-page"
+  >
+    <article class="mana-content-section">
+      <h2 class="mana-content-section__title">{page.introHeading}</h2>
+      <div class="mana-content-prose">
+        {page.introParagraphs.map((paragraph) => (
+          <p>
+            <ManaRichText text={paragraph} variant="bold-markers" />
+          </p>
+        ))}
+      </div>
+    </article>
+
+    <article class="mana-content-section">
+      <h2 class="mana-content-section__title">{page.preparationHeading}</h2>
+      <ul class="mana-content-list">
+        {page.preparationTips.map((tip) => (
+          <li>
+            <ManaRichText text={tip} variant="each-subject" />
+          </li>
+        ))}
+      </ul>
+    </article>
+
+    <section class="mana-content-section" aria-labelledby="mix-pricing-heading">
+      <h2 class="mana-content-section__title" id="mix-pricing-heading">{page.packagesHeading}</h2>
+      <ul class="mana-mix-pricing" role="list">
+        {
+          page.packages.map((pkg) => (
+            <li class:list={["mana-mix-package", pkg.featured && "mana-mix-package--featured"]}>
+              <p class="mana-mix-package__type">MIX / MASTERING</p>
+              <h3 class="mana-mix-package__tracks">{pkg.tracksLabel}</h3>
+              <p class="mana-mix-package__price">{pkg.price}</p>
+              <ul class="mana-mix-package__features">
+                <li set:html={formatMixPackageFeature("revisions", pkg.revisions)} />
+                <li set:html={formatMixPackageFeature("delivery", pkg.delivery)} />
+                <li set:html={formatMixPackageFeature("turnaround", pkg.turnaround)} />
+                <li set:html={formatMixPackageFeature("output", pkg.output)} />
+              </ul>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mana-mix-note">
+        <ManaRichText text={page.timingNote} variant="bold-markers" />
+      </p>
+    </section>
+
+    <section class="mana-mix-contact" aria-labelledby="mix-contact-heading">
+      <h2 class="mana-content-section__title" id="mix-contact-heading">{page.contactHeading}</h2>
+      <p class="mana-mix-contact__text">
+        {page.contactText}
+        <strong>{page.contactHours}</strong>.
+      </p>
+      <div class="mana-mix-contact__actions">
+        <a
+          href={`mailto:${page.contactEmail}?subject=${encodeURIComponent("Mix / Mastering — zapytanie")}`}
+          class="mana-join-action mana-join-action--primary mana-mix-contact__action"
+        >
+          <span class="mana-join-action__icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span>
+          <span class="mana-join-action__body">
+            <span class="mana-join-action__label">E-mail</span>
+            <span class="mana-join-action__value mana-join-action__value--email" translate="no">{page.contactEmail}</span>
+          </span>
+          <span class="mana-join-action__cta">Napisz</span>
+        </a>
+        <a href={`tel:${siteMeta.contact.phoneTel}`} class="mana-join-action mana-mix-contact__action">
+          <span class="mana-join-action__icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
+          <span class="mana-join-action__body">
+            <span class="mana-join-action__label">Telefon · {page.contactHours}</span>
+            <span class="mana-join-action__value" translate="no">tel. {siteMeta.contact.phoneDisplay}</span>
+          </span>
+          <span class="mana-join-action__cta">Zadzwoń</span>
+        </a>
+      </div>
+    </section>
+
+    <div class="mana-page-links">
+      <a href="/dolacz-do-nas" class="mana-page-links__item">Dołącz do nas</a>
+      <a href="/dokumenty#regulamin-ogolny" class="mana-page-links__item">Regulamin ogólny</a>
+    </div>
+  </ManaSubpageShell>
+</BaseLayout>

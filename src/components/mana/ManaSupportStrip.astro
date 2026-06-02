@@ -1,0 +1,27 @@
+---
+import { siteMeta } from "../../data/gddHome";
+---
+
+<section class="mana-surface-support relative overflow-hidden mana-section-pad">
+  <div class="mana-support-strip__gradient" aria-hidden="true"></div>
+  <div class="container relative mx-auto max-w-[880px] text-center">
+    <p class="mana-kicker text-center">Współpraca</p>
+    <div class="mana-kicker-line" aria-hidden="true"></div>
+    <h2 class="mana-title mt-6 text-[clamp(1.75rem,3.8vw,2.65rem)]">
+      Współtwórz z nami <span class="mana-title-accent">przestrzeń dźwięku</span>
+    </h2>
+    <p class="mana-prose mx-auto mt-6 max-w-2xl">
+      Wspieramy warsztaty, nagrania i rozwój młodych twórców. Możesz przekazać darowiznę na konto fundacji
+      ({siteMeta.bank.name}: <a href="/numer-konta-bankowego" class="mana-link font-semibold">{siteMeta.bank.accountFormatted}</a>) lub kupić audiobook w
+      <a href="/audiobooki" class="mana-link">sklepie cyfrowym</a>.
+    </p>
+    <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-5">
+      <a href="/numer-konta-bankowego" class="mana-btn-solid w-full min-w-[200px] sm:w-auto">
+        Numer konta
+      </a>
+      <a href="/#kontakt" class="mana-text-cta underline">
+        Dane fundacji →
+      </a>
+    </div>
+  </div>
+</section>

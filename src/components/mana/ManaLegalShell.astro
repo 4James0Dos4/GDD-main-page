@@ -1,0 +1,24 @@
+---
+import ManaSubpageShell from "./ManaSubpageShell.astro";
+
+interface Props {
+  kicker?: string;
+  title: string;
+  titleAccent?: string;
+  subtitle?: string;
+}
+
+const { kicker = "Informacje prawne", title, titleAccent, subtitle } = Astro.props;
+---
+
+<ManaSubpageShell
+  kicker={kicker}
+  title={title}
+  titleAccent={titleAccent}
+  subtitle={subtitle}
+  bodyWidth="narrow"
+>
+  <div class="mana-legal-prose mana-prose">
+    <slot />
+  </div>
+</ManaSubpageShell>

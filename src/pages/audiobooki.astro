@@ -1,0 +1,68 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../components/mana/ManaSubpageShell.astro";
+import ManaAudiobookCard from "../components/mana/ManaAudiobookCard.astro";
+import { audiobooks } from "../data/audiobooks";
+---
+
+<BaseLayout
+  title="Audiobooki"
+  description="Kup audiobooki Fundacji Gospoda Dobrego Dźwięku — bezpieczna płatność Stripe i automatyczna dostawa linku na e-mail."
+  canonicalPath="/audiobooki"
+  ogImage="/og-default.jpg"
+>
+  <ManaSubpageShell
+    kicker="Sklep cyfrowy"
+    title="Audiobooki"
+    titleAccent="fundacji"
+    subtitle="Po opłaceniu zamówienia otrzymasz link do pobrania pliku audio na adres e-mail podany w Stripe Checkout."
+    bodyWidth="full"
+  >
+    <div class="mana-shop-grid">
+      {audiobooks.map((book) => (
+        <ManaAudiobookCard book={book} />
+      ))}
+    </div>
+
+    <p class="mana-shop-footnote">
+      Płatności obsługuje Stripe. Link do pobrania wysyłamy wyłącznie na e-mail po opłaceniu zamówienia.
+      Nie dotarł mail?
+      <a href="/pobierz-link" class="mana-link">Wyślij link ponownie</a>.
+      Zakup reguluje <a href="/regulamin" class="mana-link">regulamin sklepu</a>.
+    </p>
+  </ManaSubpageShell>
+</BaseLayout>
+
+<script>
+  document.querySelectorAll(".buy-audiobook").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const productId = button.getAttribute("data-product-id");
+      if (!productId) return;
+
+      button.setAttribute("disabled", "true");
+      const original = button.textContent;
+      button.textContent = "Przekierowanie…";
+
+      try {
+        const response = await fetch("/api/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ productId }),
+        });
+        const data = (await response.json()) as { url?: string; error?: string };
+        if (data.url) {
+          window.location.href = data.url;
+          return;
+        }
+        alert(data.error || "Nie udało się rozpocząć płatności.");
+      } catch {
+        alert("Błąd połączenia z serwerem płatności.");
+      } finally {
+        button.removeAttribute("disabled");
+        button.textContent = original;
+      }
+    });
+  });
+</script>

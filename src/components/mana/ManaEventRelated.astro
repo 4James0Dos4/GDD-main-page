@@ -1,0 +1,67 @@
+---
+import type { WpEvent } from "../../lib/wordpress";
+import { formatEventBadge, formatEventMetaLine } from "../../lib/eventUtils";
+
+interface Props {
+  events: WpEvent[];
+  heading?: string;
+}
+
+const { events, heading = "Poznaj inne wydarzenia" } = Astro.props;
+---
+
+{
+  events.length ? (
+    <section class="mana-cms-related" aria-labelledby="related-events-heading">
+      <div class="mana-cms-related__heading">
+        <hr class="mana-article-rule" />
+        <h2 id="related-events-heading" class="mana-cms-related-title">
+          {heading}
+        </h2>
+        <hr class="mana-article-rule" />
+      </div>
+
+      <div class="mana-cms-related-grid">
+        {
+          events.map((ev) => {
+            const badge = formatEventBadge(ev.eventDate || ev.date);
+            const metaLine = formatEventMetaLine(ev.eventDate, ev.eventLocation, ev.date);
+
+            return (
+              <article class="mana-cms-related-card">
+                {
+                  ev.imageUrl ? (
+                    <a href={ev.link} class="mana-cms-related-card__thumb" aria-label={`Zobacz wydarzenie: ${ev.title}`}>
+                      <img
+                        src={ev.imageUrl}
+                        srcset={ev.imageSrcSet}
+                        alt={ev.imageAlt || ev.title}
+                        width={ev.imageWidth}
+                        height={ev.imageHeight}
+                        loading="lazy"
+                        decoding="async"
+                        sizes="(min-width: 768px) 50vw, 100vw"
+                      />
+                    </a>
+                  ) : null
+                }
+                <div class="mana-cms-related-card__body">
+                  <p class="mana-cms-related-card__date">
+                    {badge.month} {badge.day}
+                    {metaLine ? ` · ${metaLine}` : ""}
+                  </p>
+                  <h3 class="mana-cms-related-card__title">
+                    <a href={ev.link}>{ev.title}</a>
+                  </h3>
+                  <a href={ev.link} class="mana-cms-related-card__link">
+                    {ev.ctaLabel || "Czytaj więcej"}
+                  </a>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </section>
+  ) : null
+}

@@ -1,0 +1,136 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ManaArticleRelated from "../../components/mana/ManaArticleRelated.astro";
+import ManaCmsContent from "../../components/mana/ManaCmsContent.astro";
+import ManaShare from "../../components/mana/ManaShare.astro";
+import { estimateReadingMinutes, formatArticleDate } from "../../lib/articleUtils";
+import { siteMeta } from "../../data/gddHome";
+import { getRelatedWpArticles, getWpArticleBySlug } from "../../lib/wordpress";
+
+const { slug } = Astro.params;
+const article = slug ? await getWpArticleBySlug(slug) : null;
+
+if (!article) {
+  return Astro.rewrite("/404");
+}
+
+const relatedArticles = await getRelatedWpArticles(article, 2);
+
+const dateLabel = formatArticleDate(article.date);
+const readingMinutes = estimateReadingMinutes(article.contentHtml);
+const categoryPills = article.categories?.length
+  ? article.categories
+  : article.category
+    ? [{ name: article.category, slug: "" }]
+    : [{ name: "Artykuły fundacji", slug: "" }];
+const primaryCategory = categoryPills[0]?.name;
+
+const siteOrigin = Astro.site?.href?.replace(/\/$/, "") || siteMeta.siteUrl;
+const shareUrl = new URL(article.link, siteOrigin).href;
+---
+
+<BaseLayout
+  title={article.title}
+  description={article.excerpt}
+  canonicalPath={article.link}
+  ogImage={article.imageUrl || "/og-default.jpg"}
+  mainClass="pt-24 md:pt-28"
+>
+  <article class="mana-article-detail mana-cms-page mana-section-pad">
+    <div class="container mx-auto max-w-[1040px] px-4 sm:px-6">
+      <div class="mana-cms-detail-grid mana-article-detail__grid">
+        <div class="mana-cms-detail-main mana-article-main">
+          <nav class="mana-article-detail__mobile-nav" aria-label="Nawigacja artykułu">
+            <a href="/artykuly" class="mana-article-detail__back">
+              <span aria-hidden="true">‹</span> Artykuły
+            </a>
+          </nav>
+
+          <div class="mana-article-detail__card">
+            {
+              article.imageUrl ? (
+                <figure class="mana-article-detail__hero">
+                  <img
+                    src={article.imageUrl}
+                    srcset={article.imageSrcSet}
+                    alt={article.imageAlt || article.title}
+                    class="mana-article-detail__hero-img"
+                    width={article.imageWidth}
+                    height={article.imageHeight}
+                    loading="eager"
+                    fetchpriority="high"
+                    decoding="async"
+                    sizes="(min-width: 768px) 480px, 100vw"
+                  />
+                </figure>
+              ) : null
+            }
+
+            <div class="mana-article-detail__body">
+              <div class="mana-article-detail__meta-mobile">
+                {primaryCategory ? (
+                  <span class="mana-article-detail__category-badge">{primaryCategory}</span>
+                ) : null}
+                <span class="mana-article-detail__meta-text">{readingMinutes} min czytania</span>
+                {dateLabel ? <span class="mana-article-detail__meta-text">{dateLabel}</span> : null}
+              </div>
+
+              <header class="mana-article-main__header">
+                <h1 class="mana-article-main__title">{article.title}</h1>
+              </header>
+
+              <ManaCmsContent html={article.contentHtml} />
+
+              {
+                dateLabel ? (
+                  <footer class="mana-article-publication">
+                    <span>Opublikowano: {dateLabel}</span>
+                    <span>Autor: {siteMeta.siteName}</span>
+                  </footer>
+                ) : null
+              }
+
+              <ManaShare url={shareUrl} title={article.title} />
+            </div>
+          </div>
+        </div>
+
+        <aside
+          class="mana-cms-detail-sidebar mana-article-sidebar mana-article-detail__sidebar"
+          aria-label="Informacje o artykule"
+        >
+          <div class="mana-cms-detail-sidebar__inner mana-article-sidebar__inner">
+            <hr class="mana-article-rule" />
+            <p class="mana-cms-detail-sidebar__title mana-article-sidebar__title">{article.title}</p>
+            <hr class="mana-article-rule" />
+
+            <div class="mana-article-sidebar__info">
+              <p class="mana-cms-detail-sidebar__label mana-article-sidebar__label">Kategoria</p>
+              <div class="mana-cms-detail-sidebar__pills mana-article-sidebar__pills">
+                {
+                  categoryPills.map((cat) => (
+                    <span class="mana-cms-pill mana-article-pill">{cat.name}</span>
+                  ))
+                }
+                <span class="mana-cms-pill mana-article-pill">{readingMinutes} min czytania</span>
+              </div>
+
+              <p class="mana-cms-detail-sidebar__label mana-article-sidebar__label">Poprzednie artykuły</p>
+              <a href="/artykuly" class="mana-cms-detail-sidebar__back mana-article-sidebar__back">
+                <span aria-hidden="true">‹</span> Wróć
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <ManaArticleRelated articles={relatedArticles} />
+
+      <p class="mana-cms-footer-cta mana-article-all">
+        <a href="/artykuly" class="mana-cms-footer-cta__link mana-article-all__link">Wszystkie artykuły</a>
+      </p>
+    </div>
+  </article>
+</BaseLayout>

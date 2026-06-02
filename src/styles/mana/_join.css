@@ -1,0 +1,176 @@
+.mana-join-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.mana-join-action {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.35rem;
+  border: 1px solid color-mix(in srgb, var(--color-mana-fg) 8%, transparent);
+  border-radius: 0.625rem;
+  background: var(--color-mana-white);
+  box-shadow: var(--shadow-mana-soft);
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease,
+    background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mana-join-action:hover {
+  border-color: color-mix(in srgb, var(--color-mana-accent) 35%, transparent);
+  box-shadow: var(--shadow-mana-card);
+  transform: translateY(-2px);
+}
+
+.mana-join-action:focus-visible {
+  outline: 2px solid var(--color-mana-accent);
+  outline-offset: 2px;
+}
+
+.mana-join-action--primary {
+  background: linear-gradient(
+    145deg,
+    var(--color-mana-cream) 0%,
+    color-mix(in srgb, var(--color-mana-beige) 35%, var(--color-mana-white)) 100%
+  );
+}
+
+.mana-join-action__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-mana-accent) 10%, var(--color-mana-white));
+  color: var(--color-mana-accent);
+  font-size: 1rem;
+}
+
+.mana-join-action__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.mana-join-action__label {
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-mana-accent);
+}
+
+.mana-join-action__value {
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1rem, 3.5vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--color-mana-fg);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mana-join-action__value--email {
+  font-size: clamp(0.9375rem, 3vw, 1.125rem);
+}
+
+.mana-join-action__cta {
+  flex-shrink: 0;
+  display: none;
+  padding: 0.5rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--color-mana-accent) 35%, transparent);
+  border-radius: 999px;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-mana-accent);
+  background: var(--color-mana-white);
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.mana-join-action:hover .mana-join-action__cta {
+  border-color: var(--color-mana-accent);
+  background: color-mix(in srgb, var(--color-mana-accent) 8%, var(--color-mana-white));
+}
+
+@media (min-width: 480px) {
+  .mana-join-action__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.mana-join-invite {
+  margin: 2rem 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3.5vw, 1.65rem);
+  font-weight: 300;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--color-mana-fg);
+}
+
+.mana-join-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 2rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-mana-fg) 8%, transparent);
+}
+
+@media (min-width: 480px) {
+  .mana-join-links {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.25rem;
+  }
+}
+
+.mana-join-links__item {
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-mana-accent);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.mana-join-links__item:hover {
+  color: var(--color-mana-fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+  .mana-join-action {
+    padding: 1.5rem 1.65rem;
+  }
+
+  .mana-join-card {
+    gap: 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mana-join-action {
+    transition: none;
+  }
+
+  .mana-join-action:hover {
+    transform: none;
+  }
+}

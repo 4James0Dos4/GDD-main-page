@@ -1,0 +1,15 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaStatusShell from "../components/mana/ManaStatusShell.astro";
+---
+
+<BaseLayout title="Nie znaleziono strony" canonicalPath="/404">
+  <ManaStatusShell kicker="404" title="Strona nie istnieje" subtitle="Adres mógł zostać zmieniony lub strona została usunięta.">
+    <div class="mana-status-actions">
+      <a href="/" class="mana-btn-solid">Strona główna</a>
+      <a href="/audiobooki" class="mana-btn-outline mana-btn-outline-dark">Audiobooki</a>
+    </div>
+  </ManaStatusShell>
+</BaseLayout>

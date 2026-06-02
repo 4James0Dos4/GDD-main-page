@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-condensed: "Roboto Condensed", "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Melodrama", Georgia, "Times New Roman", serif;
+  --color-mana-bg: #f9f9f9;
+  --color-mana-fg: #1f2228;
+  --color-mana-muted: #4a4d54;
+  --color-mana-subtle: #454950;
+  --color-mana-body: #3a3d44;
+  --color-mana-meta: #5c6068;
+  --color-mana-accent: #7a532e;
+  --color-mana-accent-deep: #5c3d18;
+  --color-mana-link: #7a532e;
+  --color-mana-beige: #faf0ca;
+  --color-mana-cream: #fbf8f6;
+  --color-mana-tan: #e4d1bf;
+  --color-mana-white: #ffffff;
+  --color-mana-card: #fbfbfb;
+  --color-mana-warm: #f2efe8;
+  --color-mana-surface-support: #ebe4d4;
+  --color-mana-ink: #0a0a0a;
+  --color-mana-charcoal: #141414;
+  --color-mana-warning: #8b4513;
+  --color-mana-gold: #e8c99a;
+  --color-mana-on-dark: #d8dce3;
+  --color-mana-on-dark-muted: #eceef2;
+  --color-mana-on-dark-accent: #f4ead8;
+  --shadow-mana-card: 0 32px 80px -40px rgba(0, 0, 0, 0.24);
+  --shadow-mana-soft: 0 4px 24px -8px rgba(0, 0, 0, 0.12);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    background-color: var(--color-mana-bg);
+    color: var(--color-mana-fg);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: var(--color-mana-muted);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--color-mana-link);
+  }
+}
+

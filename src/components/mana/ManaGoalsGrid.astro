@@ -1,0 +1,32 @@
+---
+import { homeGoalsFive } from "../../data/gddHome";
+---
+
+<section id="cele" class="mana-surface-warm scroll-mt-24 mana-section-pad">
+  <div class="container mx-auto max-w-[1300px]">
+    <p class="mana-kicker text-center">Co robimy</p>
+    <div class="mana-kicker-line" aria-hidden="true"></div>
+    <h2 class="mana-title mt-6 text-center text-[clamp(2.25rem,5vw,3.75rem)]">
+      Oferta <span class="mana-title-accent">fundacji</span>
+    </h2>
+    <p class="mana-prose mx-auto mt-5 max-w-2xl text-center text-mana-subtle">
+      Edukacja muzyczna, realizacja dźwięku i wsparcie twórców — w przestrzeni dostępnej dla każdego.
+    </p>
+
+    <div class="mt-14 grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-5 lg:gap-6">
+      {
+        homeGoalsFive.map((g, idx) => (
+          <article
+            id={idx === 0 ? "warsztaty" : undefined}
+            class="mana-card flex flex-col items-center px-5 py-9 text-center"
+          >
+            <i class={`fa-solid ${g.icon} mana-goal-icon`} aria-hidden="true"></i>
+            <h3 class="mana-title text-xl font-medium text-mana-accent md:text-2xl">{g.title}</h3>
+            <p class="mana-goal-meta">{g.meta}</p>
+            <p class="mana-prose mt-4 text-center text-sm md:text-left">{g.body}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

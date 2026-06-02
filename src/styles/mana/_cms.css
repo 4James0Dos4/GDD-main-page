@@ -1,0 +1,775 @@
+/* --- CMS shared layout (wydarzenia + artykuły) --- */
+
+:root {
+  --cms-content-max: 1040px;
+  --cms-sidebar-width: 240px;
+  --cms-sidebar-bp: 992px;
+  --cms-header-height: 4rem;
+  --cms-filter-bar-height: 3.5rem;
+  --cms-header-offset: 4rem;
+}
+
+.mana-cms-page {
+  background: var(--color-mana-bg);
+  max-width: 100%;
+}
+
+.mana-cms-archive-title {
+  margin-bottom: 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: var(--color-mana-fg);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.mana-cms-archive-subtitle {
+  margin-top: 0.5rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--color-mana-meta);
+  text-align: center;
+}
+
+.mana-cms-archive-hero {
+  margin-bottom: 1.75rem;
+  text-align: center;
+}
+
+.mana-cms-archive-hero__rule {
+  margin: 1rem auto 0;
+  width: 2.75rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--color-mana-accent) 42%, transparent);
+}
+
+@media (min-width: 768px) {
+  .mana-cms-archive-title {
+    margin-bottom: 2.5rem;
+  }
+}
+
+.mana-cms-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2rem;
+}
+
+@media (min-width: 992px) {
+  .mana-cms-layout {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2.5rem;
+  }
+}
+
+.mana-cms-sidebar {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .mana-cms-sidebar {
+    width: var(--cms-sidebar-width);
+  }
+}
+
+.mana-cms-sidebar__block {
+  border: 1px solid color-mix(in srgb, var(--color-mana-fg) 8%, transparent);
+  border-radius: 0.5rem;
+  background: var(--color-mana-white);
+  box-shadow: var(--shadow-mana-soft);
+  padding: 1.15rem 1.25rem 1.35rem;
+}
+
+.mana-cms-sidebar__heading {
+  margin: 1rem 0;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--color-mana-fg);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.mana-cms-sidebar__filters {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mana-cms-sidebar__filters li + li {
+  margin-top: 0.15rem;
+}
+
+@media (max-width: 991px) {
+  .mana-cms-sidebar__filters.mana-cms-filter-scroll {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .mana-cms-sidebar__filters.mana-cms-filter-scroll li {
+    flex: 0 0 auto;
+    margin: 0;
+  }
+
+  .mana-cms-filter-btn {
+    width: auto;
+    border-radius: 9999px;
+    white-space: nowrap;
+  }
+}
+
+.mana-cms-filter-btn {
+  display: block;
+  width: 100%;
+  padding: 0.45rem 0;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-align: left;
+  color: var(--color-mana-subtle);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.mana-cms-filter-btn:hover,
+.mana-cms-filter-btn.is-active {
+  color: var(--color-mana-accent);
+  font-weight: 500;
+}
+
+.mana-cms-filter-btn:focus-visible {
+  outline: 2px solid var(--color-mana-accent);
+  outline-offset: 2px;
+}
+
+.mana-cms-sidebar__social {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.65rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mana-cms-sidebar__social-link {
+  display: inline-flex;
+  height: 2.75rem;
+  width: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--color-mana-fg) 14%, transparent);
+  border-radius: 9999px;
+  color: var(--color-mana-fg);
+  background: transparent;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.mana-cms-sidebar__social-link:hover {
+  color: var(--color-mana-accent);
+  border-color: color-mix(in srgb, var(--color-mana-accent) 45%, transparent);
+  background: color-mix(in srgb, var(--color-mana-accent) 8%, #fff);
+}
+
+.mana-cms-cross-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mana-cms-cross-nav__link {
+  display: block;
+  padding: 0.45rem 0;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  color: var(--color-mana-subtle);
+  transition: color 0.2s ease;
+}
+
+.mana-cms-cross-nav__link:hover {
+  color: var(--color-mana-accent);
+}
+
+.mana-cms-cross-nav__link[aria-current="page"] {
+  color: var(--color-mana-accent);
+  font-weight: 500;
+}
+
+.mana-cms-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 991px) {
+  .mana-cms-layout {
+    gap: 1rem;
+  }
+
+  .mana-cms-page.mana-section-pad {
+    padding-top: 3.25rem;
+    padding-bottom: 3.25rem;
+  }
+
+  .mana-cms-archive-hero {
+    margin-bottom: 1rem;
+    margin-top: var(--cms-filter-bar-height);
+  }
+
+  .mana-cms-archive-title {
+    margin-bottom: 0.35rem;
+    font-size: clamp(1.625rem, 6.5vw, 2rem);
+  }
+
+  .mana-cms-archive-subtitle {
+    margin-top: 0.35rem;
+    font-size: 0.875rem;
+    color: var(--color-mana-muted);
+  }
+
+  .mana-cms-archive-hero__rule {
+    margin-top: 0.85rem;
+    width: 2.25rem;
+  }
+
+  .mana-cms-sidebar {
+    display: contents;
+  }
+
+  .mana-cms-sidebar__block--filters {
+    order: 0;
+    position: fixed;
+    top: var(--cms-header-height);
+    left: 0;
+    right: 0;
+    z-index: 900;
+    width: 100%;
+    margin: 0;
+    padding: 0.625rem 1rem;
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+    border: none;
+    border-radius: 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-mana-fg) 8%, transparent);
+    background: var(--color-mana-bg);
+    box-shadow: 0 4px 12px -8px rgba(0, 0, 0, 0.1);
+  }
+
+  .mana-cms-sidebar__block--filters .mana-cms-sidebar__rule,
+  .mana-cms-sidebar__block--filters .mana-cms-sidebar__heading {
+    display: none;
+  }
+
+  .mana-cms-sidebar__filters.mana-cms-filter-scroll {
+    gap: 0.45rem;
+    padding-bottom: 0.1rem;
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 0.75rem,
+      #000 calc(100% - 0.75rem),
+      transparent
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 0.75rem,
+      #000 calc(100% - 0.75rem),
+      transparent
+    );
+  }
+
+  .mana-cms-filter-btn {
+    min-height: 2.375rem;
+    padding: 0.45rem 1rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    background: var(--color-mana-white);
+    border: 1px solid color-mix(in srgb, var(--color-mana-fg) 9%, transparent);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .mana-cms-filter-btn.is-active {
+    color: #fff;
+    background: var(--color-mana-accent);
+    border-color: var(--color-mana-accent);
+    box-shadow: 0 3px 12px -4px color-mix(in srgb, var(--color-mana-accent) 55%, transparent);
+  }
+
+  .mana-cms-filter-btn.is-active:hover {
+    color: #fff;
+  }
+
+  .mana-cms-main {
+    order: 1;
+  }
+
+  .mana-cms-sidebar__footer {
+    order: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.85rem 1rem;
+    margin-top: 0.75rem;
+    padding: 0.95rem 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--color-mana-accent) 12%, transparent);
+    border-radius: 0.625rem;
+    background: linear-gradient(
+      145deg,
+      var(--color-mana-cream) 0%,
+      color-mix(in srgb, var(--color-mana-beige) 35%, var(--color-mana-cream)) 100%
+    );
+    box-shadow: 0 2px 14px -10px rgba(0, 0, 0, 0.12);
+  }
+
+  .mana-cms-sidebar__footer .mana-cms-sidebar__block {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    padding: 0;
+  }
+
+  .mana-cms-sidebar__footer .mana-cms-sidebar__rule,
+  .mana-cms-sidebar__footer .mana-cms-sidebar__heading {
+    display: none;
+  }
+
+  .mana-cms-sidebar__block--nav {
+    flex: 1 1 140px;
+  }
+
+  .mana-cms-sidebar__block--contact {
+    flex: 0 0 auto;
+  }
+
+  .mana-cms-cross-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+  }
+
+  .mana-cms-cross-nav__link {
+    padding: 0.2rem 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .mana-cms-cross-nav__link[aria-current="page"] {
+    position: relative;
+  }
+
+  .mana-cms-cross-nav__link[aria-current="page"]::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -0.1rem;
+    height: 1px;
+    background: color-mix(in srgb, var(--color-mana-accent) 55%, transparent);
+  }
+
+  .mana-cms-sidebar__social {
+    margin-top: 0;
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
+
+  .mana-cms-sidebar__social-link {
+    height: 2.375rem;
+    width: 2.375rem;
+    font-size: 0.9rem;
+    background: var(--color-mana-white);
+    border-color: color-mix(in srgb, var(--color-mana-accent) 18%, transparent);
+  }
+}
+
+@media (min-width: 992px) {
+  .mana-cms-sidebar__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+}
+
+.mana-cms-filter-empty,
+.mana-cms-archive-empty {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--color-mana-subtle);
+}
+
+.mana-cms-detail-grid {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2rem;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+@media (max-width: 991px) {
+  .mana-cms-detail-grid {
+    gap: 1.5rem;
+  }
+
+  .mana-cms-detail-main {
+    order: 1;
+  }
+
+  .mana-cms-detail-sidebar {
+    order: 2;
+  }
+
+  .mana-cms-detail-sidebar__title {
+    display: none;
+  }
+
+  .mana-cms-detail-sidebar__inner > .mana-article-rule {
+    display: none;
+  }
+
+  .mana-cms-detail-sidebar__inner {
+    padding: 1rem 1.15rem;
+  }
+
+  .mana-cms-detail-sidebar__label:first-of-type {
+    margin-top: 0;
+  }
+
+  .mana-cms-detail-sidebar__inner {
+    border-color: color-mix(in srgb, var(--color-mana-accent) 12%, transparent);
+    background: linear-gradient(
+      145deg,
+      var(--color-mana-cream) 0%,
+      color-mix(in srgb, var(--color-mana-beige) 30%, var(--color-mana-white)) 100%
+    );
+  }
+}
+
+@media (min-width: 992px) {
+  .mana-cms-detail-grid {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2.5rem;
+  }
+}
+
+.mana-cms-detail-sidebar {
+  flex: 0 0 auto;
+  width: 100%;
+}
+
+@media (min-width: 992px) {
+  .mana-cms-detail-sidebar {
+    width: 220px;
+  }
+}
+
+.mana-cms-detail-sidebar__inner {
+  border: 1px solid color-mix(in srgb, var(--color-mana-fg) 8%, transparent);
+  border-radius: 0.5rem;
+  background: var(--color-mana-white);
+  box-shadow: var(--shadow-mana-soft);
+  padding: 1.25rem 1.35rem;
+}
+
+.mana-cms-detail-sidebar__title {
+  margin: 1rem 0;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--color-mana-fg);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mana-cms-detail-sidebar__label {
+  margin: 1.25rem 0 0.5rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-mana-accent);
+}
+
+.mana-cms-detail-sidebar__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.mana-cms-pill {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.3;
+  color: var(--color-mana-accent);
+  background: color-mix(in srgb, var(--color-mana-accent) 10%, #fff);
+  border: 1px solid color-mix(in srgb, var(--color-mana-accent) 22%, transparent);
+  border-radius: 9999px;
+}
+
+.mana-cms-detail-sidebar__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  padding: 0.5rem 1rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-mana-fg);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--color-mana-fg) 18%, transparent);
+  border-radius: 0.25rem;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.mana-cms-detail-sidebar__back:hover {
+  color: var(--color-mana-accent);
+  border-color: color-mix(in srgb, var(--color-mana-accent) 45%, transparent);
+  background: color-mix(in srgb, var(--color-mana-accent) 6%, #fff);
+}
+
+.mana-cms-detail-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+}
+
+.mana-cms-footer-cta {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.mana-cms-footer-cta__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.75rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-mana-fg);
+  border: 1px solid color-mix(in srgb, var(--color-mana-fg) 18%, transparent);
+  border-radius: 0.25rem;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.mana-cms-footer-cta__link:hover {
+  color: var(--color-mana-accent);
+  border-color: var(--color-mana-accent);
+  background: color-mix(in srgb, var(--color-mana-accent) 6%, #fff);
+}
+
+.mana-share,
+.mana-event-share {
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-mana-fg) 10%, transparent);
+}
+
+.mana-share-label,
+.mana-event-share-label {
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-mana-fg);
+}
+
+.mana-share-list,
+.mana-event-share-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 0.875rem;
+  padding: 0;
+  list-style: none;
+}
+
+.mana-share-btn,
+.mana-event-share-btn {
+  display: inline-flex;
+  height: 2.75rem;
+  width: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--color-mana-fg) 14%, transparent);
+  border-radius: 9999px;
+  background: #fff;
+  color: var(--color-mana-fg);
+  font-size: 0.95rem;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.mana-share-btn:hover,
+.mana-event-share-btn:hover {
+  border-color: var(--color-mana-accent);
+  background: var(--color-mana-ink);
+  color: #fff;
+}
+
+.mana-cms-related {
+  margin-top: 2.5rem;
+}
+
+.mana-cms-related__heading {
+  margin-bottom: 1.5rem;
+}
+
+.mana-cms-related-title {
+  margin: 1rem 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--color-mana-fg);
+}
+
+.mana-cms-related-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .mana-cms-related-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+.mana-cms-related-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--color-mana-fg) 8%, transparent);
+  border-radius: 0.5rem;
+  background: var(--color-mana-white);
+  box-shadow: var(--shadow-mana-soft);
+}
+
+.mana-cms-related-card__thumb {
+  display: block;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.mana-cms-related-card__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.mana-cms-related-card__thumb:hover img {
+  transform: scale(1.03);
+}
+
+.mana-cms-related-card__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 1.15rem 1.15rem;
+}
+
+.mana-cms-related-card__date {
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-mana-accent);
+}
+
+.mana-cms-related-card__title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  min-width: 0;
+}
+
+.mana-cms-related-card__title a {
+  color: var(--color-mana-fg);
+  transition: color 0.2s ease;
+}
+
+.mana-cms-related-card__title a:hover {
+  color: var(--color-mana-accent);
+}
+
+.mana-cms-related-card__link {
+  margin-top: auto;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  color: var(--color-mana-meta);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mana-cms-related-card__link:hover {
+  color: var(--color-mana-accent);
+}
+
+.mana-events-archive-more {
+  display: inline-block;
+  margin-top: 0.65rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-mana-accent);
+  transition: color 0.2s ease;
+}
+
+.mana-events-archive-more:hover {
+  color: var(--color-mana-fg);
+}
+

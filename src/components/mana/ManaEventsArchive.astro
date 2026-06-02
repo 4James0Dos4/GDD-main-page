@@ -1,0 +1,272 @@
+---
+import ManaCmsSidebar from "./ManaCmsSidebar.astro";
+import ManaImage from "./ManaImage.astro";
+import type { WpEvent } from "../../lib/wordpress";
+import { eventFilterAttr, formatEventBadge, formatEventMetaLine } from "../../lib/eventUtils";
+
+interface Props {
+  events: WpEvent[];
+  showHeader?: boolean;
+  compact?: boolean;
+  emptyMessage?: string;
+}
+
+const {
+  events,
+  showHeader = true,
+  compact = false,
+  emptyMessage = "Brak opublikowanych wydarzeń. Dodaj wpis w panelu WordPress CMS.",
+} = Astro.props;
+
+const eventFilters = [
+  { slug: "all", label: "Wszystkie" },
+  { slug: "upcoming", label: "Nadchodzące" },
+  { slug: "past", label: "Minione" },
+];
+---
+
+<section class="mana-events-archive">
+  {
+    showHeader ? (
+      <header class="mana-cms-archive-hero">
+        <h1 class="mana-cms-archive-title">Wydarzenia GDD</h1>
+        <p class="mana-cms-archive-subtitle">od najnowszych do minionych</p>
+        <div class="mana-cms-archive-hero__rule" aria-hidden="true"></div>
+      </header>
+    ) : null
+  }
+
+  {
+    events.length ? (
+      compact ? (
+        <ol class="mana-events-archive-list">
+          {
+            events.map((ev) => {
+              const badge = formatEventBadge(ev.eventDate || ev.date);
+              const metaLine = formatEventMetaLine(ev.eventDate, ev.eventLocation, ev.date);
+              const isExternal = ev.link.startsWith("http");
+
+              return (
+                <li class="mana-events-archive-item">
+                  <article class="mana-events-archive-card">
+                    {
+                      ev.imageUrl ? (
+                        <a
+                          href={ev.link}
+                          class="mana-events-archive-poster"
+                          target={isExternal ? "_blank" : undefined}
+                          rel={isExternal ? "noopener noreferrer" : undefined}
+                        >
+                          <span class="sr-only">Zobacz wydarzenie: {ev.title}</span>
+                          <ManaImage
+                            src={ev.imageUrl}
+                            alt={ev.imageAlt || ev.title}
+                            width={ev.imageWidth}
+                            height={ev.imageHeight}
+                            loading="lazy"
+                            decoding="async"
+                            sizes="(min-width: 640px) 220px, 100vw"
+                          />
+                        </a>
+                      ) : (
+                        <div class="mana-events-archive-poster mana-events-archive-poster--empty" aria-hidden="true">
+                          <i class="fa-solid fa-calendar-days"></i>
+                        </div>
+                      )
+                    }
+
+                    <div class="mana-events-archive-datebar" aria-hidden="true">
+                      <span class="mana-events-archive-date-month">{badge.month}</span>
+                      <span class="mana-events-archive-date-day">{badge.day}</span>
+                    </div>
+
+                    <div class="mana-events-archive-content">
+                      <p class="mana-events-archive-date-badge" aria-hidden="true">
+                        <span class="mana-events-archive-date-badge__pill">
+                          {badge.month} {badge.day}
+                        </span>
+                      </p>
+
+                      <h2 class="mana-events-archive-item-title">
+                        <a
+                          href={ev.link}
+                          target={isExternal ? "_blank" : undefined}
+                          rel={isExternal ? "noopener noreferrer" : undefined}
+                        >
+                          {ev.title}
+                        </a>
+                      </h2>
+
+                      {metaLine ? <p class="mana-events-archive-meta">{metaLine}</p> : null}
+
+                      {ev.excerpt ? (
+                        <p class="mana-events-archive-excerpt">
+                          <span class="mana-events-archive-excerpt__text">{ev.excerpt}</span>
+                        </p>
+                      ) : null}
+
+                      <a
+                        href={ev.link}
+                        class="mana-events-archive-more"
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noopener noreferrer" : undefined}
+                      >
+                        {ev.ctaLabel} →
+                      </a>
+                    </div>
+                  </article>
+                </li>
+              );
+            })
+          }
+        </ol>
+      ) : (
+      <div class="mana-cms-layout">
+        <ManaCmsSidebar active="events" filterHeading="Filtruj wydarzenia">
+          <ul slot="filters" class="mana-cms-sidebar__filters mana-cms-filter-scroll">
+            {
+              eventFilters.map((filter, index) => (
+                <li>
+                  <button
+                    type="button"
+                    data-filter={filter.slug}
+                    class:list={["mana-cms-filter-btn", { "is-active": index === 0 }]}
+                    aria-pressed={index === 0 ? "true" : "false"}
+                  >
+                    {filter.label}
+                  </button>
+                </li>
+              ))
+            }
+          </ul>
+        </ManaCmsSidebar>
+
+        <div class="mana-cms-main">
+          <ol class="mana-events-archive-list">
+            {
+              events.map((ev) => {
+                const badge = formatEventBadge(ev.eventDate || ev.date);
+                const metaLine = formatEventMetaLine(ev.eventDate, ev.eventLocation, ev.date);
+                const isExternal = ev.link.startsWith("http");
+                const filterAttr = eventFilterAttr(ev.eventDate || ev.date);
+
+                return (
+                  <li class="mana-events-archive-item" data-filter={filterAttr}>
+                    <article class="mana-events-archive-card">
+                      {
+                        ev.imageUrl ? (
+                          <a
+                            href={ev.link}
+                            class="mana-events-archive-poster"
+                            target={isExternal ? "_blank" : undefined}
+                            rel={isExternal ? "noopener noreferrer" : undefined}
+                          >
+                            <span class="sr-only">Zobacz wydarzenie: {ev.title}</span>
+                            <ManaImage
+                              src={ev.imageUrl}
+                              alt={ev.imageAlt || ev.title}
+                              width={ev.imageWidth}
+                              height={ev.imageHeight}
+                              loading="lazy"
+                              decoding="async"
+                              sizes="(min-width: 640px) 220px, 100vw"
+                            />
+                          </a>
+                        ) : (
+                          <div class="mana-events-archive-poster mana-events-archive-poster--empty" aria-hidden="true">
+                            <i class="fa-solid fa-calendar-days"></i>
+                          </div>
+                        )
+                      }
+
+                      <div class="mana-events-archive-datebar" aria-hidden="true">
+                        <span class="mana-events-archive-date-month">{badge.month}</span>
+                        <span class="mana-events-archive-date-day">{badge.day}</span>
+                      </div>
+
+                      <div class="mana-events-archive-content">
+                        <p class="mana-events-archive-date-badge" aria-hidden="true">
+                          <span class="mana-events-archive-date-badge__pill">
+                            {badge.month} {badge.day}
+                          </span>
+                        </p>
+
+                        <h2 class="mana-events-archive-item-title">
+                          <a
+                            href={ev.link}
+                            target={isExternal ? "_blank" : undefined}
+                            rel={isExternal ? "noopener noreferrer" : undefined}
+                          >
+                            {ev.title}
+                          </a>
+                        </h2>
+
+                        {metaLine ? <p class="mana-events-archive-meta">{metaLine}</p> : null}
+
+                        {ev.excerpt ? (
+                        <p class="mana-events-archive-excerpt">
+                          <span class="mana-events-archive-excerpt__text">{ev.excerpt}</span>
+                        </p>
+                      ) : null}
+
+                        <a
+                          href={ev.link}
+                          class="mana-events-archive-more"
+                          target={isExternal ? "_blank" : undefined}
+                          rel={isExternal ? "noopener noreferrer" : undefined}
+                        >
+                          {ev.ctaLabel} →
+                        </a>
+                      </div>
+                    </article>
+                  </li>
+                );
+              })
+            }
+          </ol>
+          <p id="mana-events-filter-empty" class="mana-cms-filter-empty" hidden>
+            Brak wydarzeń w wybranym filtrze.
+          </p>
+        </div>
+      </div>
+      )
+    ) : (
+      <p class="mana-cms-archive-empty">{emptyMessage}</p>
+    )
+  }
+</section>
+
+<script is:inline>
+  (function () {
+    var buttons = document.querySelectorAll(".mana-events-archive .mana-cms-filter-btn");
+    var items = document.querySelectorAll(".mana-events-archive-item");
+    var emptyMsg = document.getElementById("mana-events-filter-empty");
+    if (!buttons.length || !items.length) return;
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var filter = btn.getAttribute("data-filter") || "all";
+        var visibleCount = 0;
+
+        buttons.forEach(function (b) {
+          var active = b === btn;
+          b.classList.toggle("is-active", active);
+          b.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+
+        items.forEach(function (item) {
+          var raw = item.getAttribute("data-filter") || "";
+          var itemFilters = raw.split(/\s+/).filter(Boolean);
+          var show = filter === "all" || itemFilters.indexOf(filter) !== -1;
+
+          item.hidden = !show;
+          if (show) visibleCount += 1;
+        });
+
+        if (emptyMsg) {
+          emptyMsg.hidden = visibleCount > 0;
+        }
+      });
+    });
+  })();
+</script>

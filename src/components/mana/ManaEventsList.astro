@@ -1,0 +1,67 @@
+---
+import { homeEventsList, homeGalleryImages } from "../../data/gddHome";
+import ManaEventsArchive from "./ManaEventsArchive.astro";
+import type { WpEvent } from "../../lib/wordpress";
+
+const thumbs = [homeGalleryImages[3], homeGalleryImages[4]];
+
+type Props = {
+  events?: WpEvent[];
+};
+
+const { events = [] } = Astro.props;
+
+const fallbackEvents: WpEvent[] = homeEventsList.map((ev, idx) => ({
+  id: idx + 1,
+  slug: `fallback-${idx + 1}`,
+  title: ev.title,
+  excerpt: ev.description,
+  date: "",
+  link: "#warsztaty",
+  imageUrl: thumbs[idx]?.src || homeGalleryImages[0].src,
+  imageAlt: ev.title,
+  eventDate: ev.year,
+  eventLocation: ev.tag,
+  ctaLabel: "Czytaj więcej",
+}));
+
+const visibleEvents = (events.length ? events : fallbackEvents).slice(0, 3);
+const isFallback = events.length === 0;
+---
+
+<section id="wydarzenia" class="scroll-mt-24 bg-mana-white mana-section-pad">
+  <div class="container mx-auto max-w-[1060px]">
+    <p class="mana-kicker text-center">Aktualności</p>
+    <div class="mana-kicker-line" aria-hidden="true"></div>
+    <h2 class="mana-title mt-6 text-center text-[clamp(2.25rem,5vw,3.75rem)]">
+      Wydarzenia <span class="mana-title-accent">fundacji</span>
+    </h2>
+    <p class="mana-prose mx-auto mt-5 max-w-2xl text-center">
+      {isFallback
+        ? "Tu pojawią się wydarzenia dodane w WordPressie. Do czasu uruchomienia CMS pokazujemy podstawowe informacje o działaniach fundacji."
+        : "Najnowsze wydarzenia — od najnowszych do minionych."}
+    </p>
+
+    <div class="mt-10">
+      <ManaEventsArchive
+        events={visibleEvents}
+        showHeader={false}
+        compact
+        emptyMessage="Brak wydarzeń do wyświetlenia."
+      />
+    </div>
+
+    <p class="mt-10 text-center">
+      {
+        !isFallback ? (
+          <a href="/wydarzenia" class="mana-btn-outline mana-btn-outline-dark px-8 py-3">
+            Wszystkie wydarzenia
+          </a>
+        ) : null
+      }
+      <a href={isFallback ? "#artykuly" : "/artykuly"} class:list={["mana-btn-outline mana-btn-outline-dark px-8 py-3", !isFallback && "ml-4"]}>
+        {isFallback ? "Zobacz artykuły" : "Artykuły"}
+      </a>
+    </p>
+  </div>
+</section>

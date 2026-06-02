@@ -1,0 +1,35 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaLegalShell from "../components/mana/ManaLegalShell.astro";
+import { siteMeta } from "../data/gddHome";
+---
+
+<BaseLayout title="Regulamin sklepu" canonicalPath="/regulamin">
+  <ManaLegalShell title="Regulamin sklepu z treściami cyfrowymi">
+    <p>
+      Regulamin określa zasady sprzedaży <strong>audiobooków</strong> przez {siteMeta.siteName} z siedzibą przy
+      {siteMeta.addressLine1}.
+    </p>
+    <h2>1. Produkt cyfrowy</h2>
+    <p>
+      Po opłaceniu zamówienia klient otrzymuje <strong>link do pobrania pliku audio</strong> na adres e-mail podany w procesie płatności Stripe.
+      Link ma <strong>ograniczony czas ważności</strong>.
+    </p>
+    <h2>2. Płatności</h2>
+    <p>
+      Płatności obsługuje <strong>Stripe</strong>. Ceny podane na stronie sklepu są <strong>cenami brutto</strong>, o ile nie wskazano inaczej.
+    </p>
+    <h2>3. Prawo odstąpienia</h2>
+    <p>
+      W przypadku treści cyfrowych dostarczanych <strong>natychmiast po zapłacie</strong>, po wyraźnej zgodzie konsumenta na rozpoczęcie świadczenia
+      przed upływem terminu odstąpienia, <strong>prawo odstąpienia może nie przysługiwać</strong> zgodnie z obowiązującymi przepisami.
+    </p>
+    <h2>4. Reklamacje</h2>
+    <p>
+      W sprawach reklamacji i wsparcia technicznego prosimy o kontakt:
+      <a href={`mailto:${siteMeta.email}`} class="mana-link">{siteMeta.email}</a>.
+    </p>
+  </ManaLegalShell>
+</BaseLayout>

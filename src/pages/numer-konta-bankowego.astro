@@ -1,0 +1,85 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../components/mana/ManaSubpageShell.astro";
+import { siteMeta } from "../data/gddHome";
+
+const { bank } = siteMeta;
+---
+
+<BaseLayout
+  title="Numer konta bankowego"
+  description="Numer konta bankowego Fundacji Gospoda Dobrego Dźwięku — darowizny na warsztaty i działalność fundacji."
+  canonicalPath="/numer-konta-bankowego"
+>
+  <ManaSubpageShell
+    kicker="O nas"
+    title="Numer konta bankowego"
+    subtitle={`Darowizny na działalność ${siteMeta.siteSubtitle.toLowerCase()}`}
+    bodyWidth="narrow"
+    class="mana-bank-page"
+  >
+    <div class="mana-bank-card" role="region" aria-label="Dane do przelewu">
+      <div class="mana-bank-card__row">
+        <span class="mana-bank-card__label">Bank</span>
+        <span class="mana-bank-card__value">{bank.name}</span>
+      </div>
+      <div class="mana-bank-card__row mana-bank-card__row--primary">
+        <span class="mana-bank-card__label">Numer konta bankowego</span>
+        <div class="mana-bank-card__field">
+          <p class="mana-bank-card__account" id="bank-account-display" translate="no">{bank.accountFormatted}</p>
+          <button type="button" class="mana-bank-copy-btn" data-copy-target={bank.accountRaw} aria-label="Kopiuj numer konta do schowka">
+            <i class="fa-regular fa-copy" aria-hidden="true"></i>
+            <span>Kopiuj numer</span>
+          </button>
+        </div>
+      </div>
+      <div class="mana-bank-card__row">
+        <span class="mana-bank-card__label">Tytuł przelewu</span>
+        <div class="mana-bank-card__field">
+          <p class="mana-bank-card__title" translate="no">{bank.transferTitle}</p>
+          <button type="button" class="mana-bank-copy-btn" data-copy-target={bank.transferTitle} aria-label="Kopiuj tytuł przelewu do schowka">
+            <i class="fa-regular fa-copy" aria-hidden="true"></i>
+            <span>Kopiuj tytuł</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <p class="mana-bank-note">
+      Wpłaty na warsztaty i wsparcie fundacji realizujemy jako darowiznę. W tytule przelewu wpisz
+      <strong>{bank.transferTitle}</strong>. W razie pytań napisz na
+      <a href={`mailto:${siteMeta.email}`}>{siteMeta.email}</a>.
+    </p>
+    <div class="mana-bank-links">
+      <a href="/dokumenty#dane-rejestrowe" class="mana-bank-links__item">Dane rejestrowe fundacji</a>
+      <a href="/dokumenty" class="mana-bank-links__item">Dokumenty i regulaminy</a>
+    </div>
+  </ManaSubpageShell>
+</BaseLayout>
+
+<script>
+  function initBankCopyButtons() {
+    document.querySelectorAll<HTMLButtonElement>("[data-copy-target]").forEach((btn) => {
+      if (btn.dataset.copyBound === "true") return;
+      btn.dataset.copyBound = "true";
+      btn.addEventListener("click", async () => {
+        const text = btn.dataset.copyTarget ?? "";
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+          const label = btn.querySelector("span");
+          const prev = label?.textContent ?? "";
+          btn.classList.add("is-copied");
+          if (label) label.textContent = "Skopiowano";
+          setTimeout(() => {
+            btn.classList.remove("is-copied");
+            if (label) label.textContent = prev;
+          }, 2000);
+        } catch { /* schowek niedostępny */ }
+      });
+    });
+  }
+  initBankCopyButtons();
+  document.addEventListener("astro:page-load", initBankCopyButtons);
+</script>

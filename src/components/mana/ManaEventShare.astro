@@ -1,0 +1,13 @@
+---
+import ManaShare from "./ManaShare.astro";
+
+interface Props {
+  url: string;
+  title: string;
+  downloadUrl?: string;
+}
+
+const props = Astro.props;
+---
+
+<ManaShare {...props} />

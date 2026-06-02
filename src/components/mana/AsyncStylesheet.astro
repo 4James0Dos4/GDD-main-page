@@ -1,0 +1,22 @@
+---
+/** Non-render-blocking stylesheet (media=print → all on load). */
+interface Props {
+  href: string;
+  crossorigin?: "anonymous" | "use-credentials";
+  referrerpolicy?: string;
+}
+
+const { href, crossorigin, referrerpolicy } = Astro.props;
+---
+
+<link
+  rel="stylesheet"
+  href={href}
+  media="print"
+  onload="this.media='all'"
+  crossorigin={crossorigin}
+  referrerpolicy={referrerpolicy}
+/>
+<noscript>
+  <link rel="stylesheet" href={href} crossorigin={crossorigin} referrerpolicy={referrerpolicy} />
+</noscript>

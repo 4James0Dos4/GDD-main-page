@@ -1,0 +1,42 @@
+---
+import { homeGalleryImages } from "../../data/gddHome";
+import ManaImage from "./ManaImage.astro";
+---
+
+<section id="galeria" class="mana-surface-dark mana-gallery-dark scroll-mt-24 bg-[#0d0d0d] mana-section-pad text-white">
+  <div class="container mx-auto max-w-[1300px]">
+    <p class="mana-kicker mana-kicker--on-dark text-center">Obiekty i atmosfera</p>
+    <div class="mx-auto mt-4 h-px w-12 bg-white/20" aria-hidden="true"></div>
+    <h2 class="mana-title mt-6 text-center text-[clamp(2.25rem,5vw,3.75rem)]">
+      Galeria <span class="mana-title-accent">realizacji</span>
+    </h2>
+    <p class="mana-prose-on-dark mx-auto mt-4 max-w-xl text-center">
+      Zdjęcia z realizacji, studia i wydarzeń — kliknij kafel, aby otworzyć pełny plik.
+    </p>
+
+    <div class="mana-custom-gallery mt-14 md:min-h-[480px]">
+      {
+        homeGalleryImages.map((img) => (
+          <a
+            href={img.src}
+            class="mana-gallery-item group block min-h-[160px] md:min-h-[220px]"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span class="sr-only">Otwórz zdjęcie w pełnym rozmiarze: {img.alt}</span>
+            <ManaImage
+              src={img.image}
+              alt={img.alt}
+              loading="lazy"
+              decoding="async"
+              sizes="(min-width: 768px) 33vw, 100vw"
+              widths={[320, 480, 640, 960]}
+              quality={75}
+              class="block h-full min-h-[160px] w-full md:min-h-[220px]"
+            />
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../components/mana/ManaSubpageShell.astro";
+import { siteMeta } from "../data/gddHome";
+
+const { contact } = siteMeta;
+---
+
+<BaseLayout
+  title="Dołącz do nas"
+  description="Dołącz do zespołu Fundacji Gospoda Dobrego Dźwięku — skontaktuj się telefonicznie lub mailowo."
+  canonicalPath="/dolacz-do-nas"
+>
+  <ManaSubpageShell
+    kicker="O nas"
+    title="Dołącz do nas"
+    subtitle="Aby dołączyć do naszego zespołu zadzwoń lub napisz"
+    bodyWidth="narrow"
+    class="mana-join-page"
+  >
+    <div class="mana-join-card" role="region" aria-label="Dane kontaktowe">
+      <a href={`tel:${contact.phoneTel}`} class="mana-join-action">
+        <span class="mana-join-action__icon" aria-hidden="true"><i class="fa-solid fa-phone"></i></span>
+        <span class="mana-join-action__body">
+          <span class="mana-join-action__label">Telefon</span>
+          <span class="mana-join-action__value" translate="no">tel. {contact.phoneDisplay}</span>
+        </span>
+        <span class="mana-join-action__cta">Zadzwoń</span>
+      </a>
+      <a href={`mailto:${contact.joinEmail}`} class="mana-join-action mana-join-action--primary">
+        <span class="mana-join-action__icon" aria-hidden="true"><i class="fa-solid fa-envelope"></i></span>
+        <span class="mana-join-action__body">
+          <span class="mana-join-action__label">E-mail</span>
+          <span class="mana-join-action__value mana-join-action__value--email" translate="no">{contact.joinEmail}</span>
+        </span>
+        <span class="mana-join-action__cta">Napisz</span>
+      </a>
+    </div>
+    <p class="mana-join-invite">Serdecznie zapraszamy!</p>
+    <div class="mana-join-links">
+      <a href="/numer-konta-bankowego" class="mana-join-links__item">Wsparcie fundacji — numer konta</a>
+      <a href="/dokumenty" class="mana-join-links__item">Dokumenty i regulaminy</a>
+    </div>
+  </ManaSubpageShell>
+</BaseLayout>

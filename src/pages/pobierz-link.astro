@@ -1,0 +1,93 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../components/mana/ManaSubpageShell.astro";
+import { getDownloadTokenTtlHours } from "../lib/stripeEnv";
+
+const sessionIdFromQuery = Astro.url.searchParams.get("session_id")?.trim() ?? "";
+const ttlHours = getDownloadTokenTtlHours();
+---
+
+<BaseLayout title="Wyślij link ponownie" canonicalPath="/pobierz-link">
+  <ManaSubpageShell
+    kicker="Sklep cyfrowy"
+    title="Wyślij link do audiobooka ponownie"
+    subtitle="Jeśli nie otrzymałeś wiadomości e-mail po zakupie, podaj adres z płatności oraz identyfikator sesji (znajdziesz go w adresie strony po płatności: parametr session_id)."
+  >
+    <form id="resend-form" class="mt-8 max-w-md space-y-4">
+      <div>
+        <label for="email" class="mana-prose block text-sm font-medium">Adres e-mail z zamówienia</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          autocomplete="email"
+          class="mt-1 w-full rounded-md border border-[color:var(--color-mana-border)] bg-white px-3 py-2 text-[color:var(--color-mana-body)]"
+        />
+      </div>
+      <div>
+        <label for="sessionId" class="mana-prose block text-sm font-medium">Identyfikator sesji (session_id)</label>
+        <input
+          type="text"
+          id="sessionId"
+          name="sessionId"
+          required
+          placeholder="cs_test_…"
+          value={sessionIdFromQuery}
+          class="mt-1 w-full rounded-md border border-[color:var(--color-mana-border)] bg-white px-3 py-2 font-mono text-sm text-[color:var(--color-mana-body)]"
+        />
+      </div>
+      <p id="resend-status" class="mana-prose mana-prose--muted text-sm" role="status" aria-live="polite"></p>
+      <button type="submit" class="mana-btn-solid inline-flex">Wyślij link na e-mail</button>
+    </form>
+    <p class="mana-prose mana-prose--muted mt-6 text-sm">
+      Nowy link będzie ważny przez {ttlHours} godz. i działa jednorazowo. Wcześniejszy link (jeśli jeszcze nie został
+      użyty) zostanie unieważniony.
+    </p>
+    <p class="mt-6">
+      <a href="/audiobooki" class="mana-link">Wróć do sklepu</a>
+    </p>
+  </ManaSubpageShell>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById("resend-form") as HTMLFormElement | null;
+  const statusEl = document.getElementById("resend-status");
+
+  form?.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!statusEl) return;
+
+    const email = (document.getElementById("email") as HTMLInputElement).value.trim();
+    const sessionId = (document.getElementById("sessionId") as HTMLInputElement).value.trim();
+    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    submitBtn.disabled = true;
+    statusEl.textContent = "Wysyłanie…";
+
+    try {
+      const response = await fetch("/api/resend-audiobook-link", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, sessionId }),
+      });
+      const data = (await response.json()) as { ok?: boolean; error?: string };
+
+      if (response.ok && data.ok) {
+        statusEl.textContent =
+          "Link wysłaliśmy na podany adres. Sprawdź skrzynkę i folder spam/oferty.";
+        statusEl.classList.remove("mana-prose--warning");
+      } else {
+        statusEl.textContent = data.error || "Nie udało się wysłać linku.";
+        statusEl.classList.add("mana-prose--warning");
+      }
+    } catch {
+      statusEl.textContent = "Błąd połączenia. Spróbuj ponownie za chwilę.";
+      statusEl.classList.add("mana-prose--warning");
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>

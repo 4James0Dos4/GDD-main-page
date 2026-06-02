@@ -1,0 +1,112 @@
+---
+import { siteMeta } from "../../data/gddHome";
+import ManaImage from "./ManaImage.astro";
+import type { WpArticle } from "../../lib/wordpress";
+
+type Props = {
+  articles?: WpArticle[];
+};
+
+const { articles = [] } = Astro.props;
+
+function formatPostDate(value: string): string {
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return "";
+
+  return new Intl.DateTimeFormat("pl-PL", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(parsed);
+}
+---
+
+<section id="artykuly" class="mana-surface-dark relative overflow-hidden bg-[#121212] mana-section-pad text-white">
+  <div
+    class="pointer-events-none absolute inset-0 opacity-[0.07]"
+    style="background-image: radial-gradient(circle at 20% 20%, #fff 0%, transparent 45%), radial-gradient(circle at 80% 60%, #c4a574 0%, transparent 40%);"
+    aria-hidden="true"
+  />
+  <div class="container relative mx-auto max-w-[1300px]">
+    <p class="mana-kicker mana-kicker--on-dark text-center">Blog i wiedza</p>
+    <div class="mx-auto mt-4 h-px w-12 bg-white/25" aria-hidden="true"></div>
+    <h2 class="mana-title mt-6 text-center text-[clamp(1.85rem,4vw,2.75rem)]">
+      Artykuły <span class="mana-title-accent">z CMS</span>
+    </h2>
+    {
+      articles.length ? (
+        <>
+          <p class="mana-prose-on-dark mx-auto mt-6 max-w-xl text-center">
+            Najnowsze materiały dodawane w panelu WordPress.
+          </p>
+          <div class="mt-14 grid gap-8 md:grid-cols-3">
+            {articles.map((article) => {
+              const isExternal = article.link.startsWith("http");
+              return (
+              <article class="flex h-full flex-col overflow-hidden rounded-md border border-white/12 bg-white/[0.06] shadow-[0_24px_70px_-44px_rgba(255,255,255,0.3)]">
+                {article.imageUrl ? (
+                  <a
+                    href={article.link}
+                    class="group block aspect-[4/3] overflow-hidden"
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noopener noreferrer" : undefined}
+                  >
+                    <span class="sr-only">Czytaj artykuł: {article.title}</span>
+                    <ManaImage
+                      src={article.imageUrl}
+                      alt={article.imageAlt || article.title}
+                      class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                      loading="lazy"
+                    />
+                  </a>
+                ) : null}
+                <div class="flex flex-1 flex-col justify-between p-7">
+                  <div>
+                    <p class="font-['Roboto',sans-serif] text-[10px] font-semibold uppercase tracking-[0.22em] text-[#f4ead8]">
+                      {formatPostDate(article.date) || "Artykuł"}
+                    </p>
+                    <h3 class="mt-4 font-display text-2xl font-medium leading-tight text-white">
+                      {article.title}
+                    </h3>
+                    <p class="mt-4 font-['Roboto',sans-serif] text-sm leading-relaxed text-[#eceef2]">
+                      {article.excerpt}
+                    </p>
+                  </div>
+                  <a
+                    href={article.link}
+                    class="mt-8 inline-flex font-['Roboto',sans-serif] text-[11px] font-semibold uppercase tracking-[0.2em] text-[#f4ead8] transition-colors hover:text-white"
+                    target={isExternal ? "_blank" : undefined}
+                    rel={isExternal ? "noopener noreferrer" : undefined}
+                    aria-label={`Czytaj artykuł: ${article.title}`}
+                  >
+                    Czytaj więcej <span class="ml-1" aria-hidden="true">→</span>
+                  </a>
+                </div>
+              </article>
+            );
+            })}
+          </div>
+          <p class="mt-14 text-center">
+            <a href="/artykuly" class="mana-btn-outline mana-btn-outline-light px-10 py-4 text-[11px] md:inline-flex">
+              Wszystkie artykuły
+            </a>
+          </p>
+        </>
+      ) : (
+        <div class="mx-auto max-w-[920px] text-center">
+          <p class="mana-prose-on-dark mx-auto mt-6 max-w-xl text-center">
+            Zapraszamy na stronę z pełnym opisem warsztatów, usług audio i działań fundacji — tam znajdziesz aktualne informacje i kontakt do zespołu.
+          </p>
+          <a
+            href={siteMeta.fullSiteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="mana-btn-outline mana-btn-outline-light mt-10 px-10 py-4 text-[11px] md:inline-flex"
+          >
+            Otwórz gospoda-dobrego-dźwięku.pl
+          </a>
+        </div>
+      )
+    }
+  </div>
+</section>

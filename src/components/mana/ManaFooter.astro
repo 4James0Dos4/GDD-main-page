@@ -1,0 +1,111 @@
+---
+import { siteMeta, navAnchors, footerLinks } from "../../data/gddHome";
+---
+
+<footer id="kontakt" class="scroll-mt-24 border-t border-white/10 bg-black text-white/85">
+  <div class="px-6 pb-12 pt-16 md:px-8 md:pb-16 md:pt-20">
+    <h2 class="sr-only">Stopka strony — nawigacja pomocnicza i dane fundacji</h2>
+    <div class="container mx-auto grid max-w-[1300px] gap-14 md:grid-cols-3 md:gap-12">
+      <div>
+        <h3 class="mana-footer-heading">Menu</h3>
+        <ul class="mt-6 space-y-3">
+          {
+            navAnchors.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  class="font-['Roboto',sans-serif] text-sm text-[#d8dce3] transition-colors hover:text-white"
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div>
+        <h3 class="mana-footer-heading">Dane fundacji</h3>
+        <p class="mt-6 font-['Roboto',sans-serif] text-sm leading-[1.85] text-[#d8dce3]">
+          <span class="font-medium text-white">{siteMeta.siteName}</span>
+          <br />
+          <span class="text-[#c9cdd4]">{siteMeta.siteSubtitle}</span>
+          <br />
+          <br />
+          {siteMeta.addressLine1}
+          <br />
+          {siteMeta.addressLine2}
+          <br />
+          <br />
+          <span class="text-[#aeb4bd]">KRS</span> {siteMeta.krs}
+          <br />
+          <span class="text-[#aeb4bd]">NIP</span> {siteMeta.nip}
+          <br />
+          <span class="text-[#aeb4bd]">REGON</span> {siteMeta.regon}
+          <br />
+          <br />
+          <span class="text-[#aeb4bd]">Darowizna ({siteMeta.bank.name})</span>
+          <br />
+          <span id="footer-bank-account">{siteMeta.bank.accountFormatted}</span>
+          <button
+            type="button"
+            id="footer-copy-iban"
+            class="ml-2 inline-flex items-center rounded border border-white/20 px-2 py-0.5 font-['Roboto',sans-serif] text-[10px] font-semibold uppercase tracking-wider text-[#e8c99a] transition-colors hover:border-white/40 hover:text-white"
+            aria-label="Kopiuj numer konta do schowka"
+          >
+            Kopiuj
+          </button>
+          <br />
+          <br />
+          <a href={`mailto:${siteMeta.email}`} class="text-[#e8c99a] underline-offset-2 transition-colors hover:text-white hover:underline">
+            {siteMeta.email}
+          </a>
+        </p>
+      </div>
+      <div>
+        <h3 class="mana-footer-heading">Linki</h3>
+        <ul class="mt-6 space-y-3">
+          {
+            footerLinks.map((l) => (
+              <li>
+                <a
+                  href={l.href}
+                  class="font-['Roboto',sans-serif] text-sm text-[#d8dce3] transition-colors hover:text-white"
+                  target={l.href.startsWith("http") ? "_blank" : undefined}
+                  rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                >
+                  {l.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="container mx-auto mt-16 max-w-[1300px] border-t border-white/15 pt-10">
+      <p class="mana-footer-legal">{siteMeta.disclaimer}</p>
+      <p class="mana-footer-copy mt-8 text-center">
+        {siteMeta.copyright} · Treść: Fundacja Gospoda Dobrego Dźwięku
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById("footer-copy-iban");
+    var accountEl = document.getElementById("footer-bank-account");
+    if (!btn || !accountEl) return;
+    btn.addEventListener("click", function () {
+      var raw = accountEl.textContent ? accountEl.textContent.replace(/\s/g, "") : "";
+      if (!raw) return;
+      navigator.clipboard.writeText(raw).then(function () {
+        var prev = btn.textContent;
+        btn.textContent = "Skopiowano";
+        setTimeout(function () {
+          btn.textContent = prev;
+        }, 2000);
+      });
+    });
+  })();
+</script>

@@ -1,0 +1,124 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../../components/mana/ManaSubpageShell.astro";
+import { gddDocumentSections } from "../../data/gddDocuments";
+import { documentTextToHtml } from "../../lib/documentUtils";
+---
+
+<BaseLayout
+  title="Dokumenty"
+  description="Statut Fundacji, dane rejestrowe, regulaminy warsztatów i polityka prywatności — FUNDACJA ARTYSTYCZNA Gospoda Dobrego Dźwięku."
+  canonicalPath="/dokumenty"
+>
+  <ManaSubpageShell
+    kicker="O nas"
+    title="Dokumenty"
+    subtitle="FUNDACJA ARTYSTYCZNA — Gospoda Dobrego Dźwięku"
+    bodyWidth="wide"
+    class="mana-docs-page"
+  >
+    <nav class="mana-docs-nav-mobile" aria-label="Spis dokumentów" data-docs-nav>
+      <ul class="mana-docs-nav-mobile__list">
+        {
+          gddDocumentSections.map((section) => (
+            <li>
+              <a href={`#${section.id}`} class="mana-docs-nav-mobile__link" data-docs-link={section.id}>
+                <span class="mana-docs-nav-mobile__num">{section.number}</span>
+                <span class="mana-docs-nav-mobile__label">{section.title}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="mana-docs-layout">
+      <aside class="mana-docs-sidebar" aria-label="Spis treści">
+        <div class="mana-cms-sidebar__block mana-docs-sidebar__block">
+          <hr class="mana-article-rule mana-cms-sidebar__rule" />
+          <p class="mana-cms-sidebar__heading">Spis dokumentów</p>
+          <hr class="mana-article-rule mana-cms-sidebar__rule" />
+          <ol class="mana-docs-sidebar__list">
+            {
+              gddDocumentSections.map((section) => (
+                <li>
+                  <a href={`#${section.id}`} class="mana-docs-sidebar__link" data-docs-link={section.id}>
+                    <span class="mana-docs-sidebar__num">{section.number}</span>
+                    {section.title}
+                  </a>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </aside>
+
+      <div class="mana-docs-main">
+        {
+          gddDocumentSections.map((section) => (
+            <article id={section.id} class="mana-docs-section" data-docs-section={section.id}>
+              <header class="mana-docs-section__header">
+                <span class="mana-docs-section__num">{section.number}</span>
+                <h2 class="mana-docs-section__title">{section.title}</h2>
+              </header>
+              <div class="mana-docs-prose" set:html={documentTextToHtml(section.body)} />
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </ManaSubpageShell>
+</BaseLayout>
+
+<script>
+  function initDocsNav() {
+    const sections = Array.from(document.querySelectorAll<HTMLElement>("[data-docs-section]"));
+    const links = Array.from(document.querySelectorAll<HTMLAnchorElement>("[data-docs-link]"));
+    if (!sections.length || !links.length) return;
+
+    const setActive = (id: string) => {
+      links.forEach((link) => {
+        const active = link.dataset.docsLink === id;
+        link.classList.toggle("is-active", active);
+        if (active && link.closest(".mana-docs-nav-mobile__list")) {
+          link.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+        if (visible[0]?.target instanceof HTMLElement) {
+          setActive(visible[0].target.dataset.docsSection ?? "");
+        }
+      },
+      { rootMargin: "-20% 0px -55% 0px", threshold: [0, 0.15, 0.35, 0.55] },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    const hash = window.location.hash.replace("#", "");
+    if (hash) {
+      setActive(hash);
+      const target = document.getElementById(hash);
+      if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: "smooth", block: "start" }));
+    } else {
+      setActive(sections[0]?.dataset.docsSection ?? "");
+    }
+
+    links.forEach((link) => {
+      link.addEventListener("click", () => {
+        const id = link.dataset.docsLink;
+        if (id) setActive(id);
+      });
+    });
+  }
+
+  initDocsNav();
+  document.addEventListener("astro:page-load", initDocsNav);
+</script>

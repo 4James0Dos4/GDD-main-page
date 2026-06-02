@@ -1,0 +1,18 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaStatusShell from "../components/mana/ManaStatusShell.astro";
+---
+
+<BaseLayout title="Płatność anulowana" canonicalPath="/anulowano">
+  <ManaStatusShell
+    kicker="Sklep cyfrowy"
+    title="Płatność anulowana"
+    subtitle="Nie pobraliśmy żadnej opłaty. Możesz wrócić do sklepu i spróbować ponownie."
+  >
+    <div class="mana-status-actions">
+      <a href="/audiobooki" class="mana-btn-solid">Wróć do sklepu</a>
+    </div>
+  </ManaStatusShell>
+</BaseLayout>

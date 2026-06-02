@@ -1,0 +1,25 @@
+---
+interface Props {
+  kicker?: string;
+  title: string;
+  titleAccent?: string;
+  subtitle?: string;
+  class?: string;
+}
+
+const { kicker, title, titleAccent, subtitle, class: className } = Astro.props;
+---
+
+<header class:list={["mana-subpage-hero", className]}>
+  {kicker ? (
+    <>
+      <p class="mana-kicker text-center">{kicker}</p>
+      <div class="mana-kicker-line" aria-hidden="true"></div>
+    </>
+  ) : null}
+  <h1 class="mana-title mana-subpage-hero__title">
+    {title}
+    {titleAccent ? <span class="mana-title-accent">{titleAccent}</span> : null}
+  </h1>
+  {subtitle ? <p class="mana-prose mana-subpage-hero__subtitle">{subtitle}</p> : null}
+</header>

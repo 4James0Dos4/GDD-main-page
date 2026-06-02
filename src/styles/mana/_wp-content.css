@@ -1,0 +1,74 @@
+/* Treść HTML z WordPress CMS */
+.mana-wp-content {
+  margin-top: 2rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--color-mana-body);
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mana-prose-break {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mana-wp-content > *:first-child {
+  margin-top: 0;
+}
+
+.mana-wp-content p,
+.mana-wp-content ul,
+.mana-wp-content ol,
+.mana-wp-content blockquote,
+.mana-wp-content figure,
+.mana-wp-content .wp-block-image {
+  margin-top: 1.25rem;
+  margin-bottom: 0;
+}
+
+.mana-wp-content h2,
+.mana-wp-content h3,
+.mana-wp-content h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--color-mana-fg);
+  margin-top: 2rem;
+  line-height: 1.2;
+}
+
+.mana-wp-content h2 {
+  font-size: 1.75rem;
+}
+
+.mana-wp-content h3 {
+  font-size: 1.375rem;
+}
+
+.mana-wp-content a {
+  color: var(--color-mana-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.mana-wp-content img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.25rem;
+}
+
+.mana-wp-content ul,
+.mana-wp-content ol {
+  padding-left: 1.5rem;
+}
+
+.mana-wp-content blockquote {
+  border-left: 3px solid color-mix(in srgb, var(--color-mana-accent) 40%, transparent);
+  padding-left: 1rem;
+  color: var(--color-mana-subtle);
+  font-style: italic;
+}
+

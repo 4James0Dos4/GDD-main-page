@@ -1,0 +1,795 @@
+/* Archiwum wydarzeń — karty jak mana.org.pl/nasze-wydarzenia (kolorystyka GDD) */
+.mana-events-archive-page {
+  background: var(--color-mana-bg);
+}
+
+.mana-events-archive-header {
+  margin-bottom: 2.75rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .mana-events-archive-header {
+    text-align: left;
+  }
+}
+
+.mana-events-archive-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-mana-fg);
+}
+
+.mana-events-archive-subtitle {
+  margin-top: 0.65rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.8vw, 1.85rem);
+  font-weight: 300;
+  line-height: 1.2;
+  color: var(--color-mana-meta);
+}
+
+.mana-events-archive-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+@media (min-width: 768px) {
+  .mana-events-archive-list {
+    gap: 2rem;
+  }
+}
+
+.mana-events-archive-item {
+  margin: 0;
+}
+
+.mana-events-archive-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-width: 100%;
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--color-mana-accent) 22%, #ddd 78%);
+  border-radius: 1rem;
+  background: var(--color-mana-white);
+  box-shadow: var(--shadow-mana-soft);
+  transition:
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+}
+
+@media (max-width: 639px) {
+  .mana-events-archive-list {
+    gap: 1.125rem;
+  }
+
+  .mana-events-archive-card {
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--color-mana-fg) 6%, transparent);
+    border-radius: 0.625rem;
+    background: var(--color-mana-white);
+    box-shadow:
+      0 2px 16px -8px rgba(0, 0, 0, 0.08),
+      0 0 0 1px color-mix(in srgb, var(--color-mana-accent) 4%, transparent);
+  }
+
+  .mana-events-archive-item:last-child .mana-events-archive-card {
+    border-bottom: 1px solid color-mix(in srgb, var(--color-mana-fg) 6%, transparent);
+  }
+
+  .mana-events-archive-poster {
+    max-height: none;
+  }
+
+  .mana-events-archive-poster img {
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .mana-events-archive-poster--empty {
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: 16 / 9;
+    background: linear-gradient(145deg, var(--color-mana-cream) 0%, var(--color-mana-warm) 100%);
+  }
+
+  .mana-events-archive-content {
+    padding: 1rem 1.1rem 1.15rem;
+  }
+
+  .mana-events-archive-item-title {
+    font-size: 1.1875rem;
+  }
+
+  .mana-events-archive-meta {
+    margin-top: 0.35rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--color-mana-muted);
+  }
+
+  .mana-events-archive-excerpt {
+    margin-top: 0.55rem;
+    font-size: 0.875rem;
+    color: var(--color-mana-muted);
+  }
+
+  .mana-events-archive-date-badge__pill {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    color: #fff;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-mana-accent) 92%, #000 8%) 0%,
+      var(--color-mana-accent) 100%
+    );
+    border: none;
+    box-shadow: 0 2px 8px -4px color-mix(in srgb, var(--color-mana-accent) 50%, transparent);
+  }
+
+  .mana-events-archive-more {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+  }
+}
+
+.mana-events-archive-card:hover {
+  border-color: color-mix(in srgb, var(--color-mana-accent) 45%, transparent);
+  box-shadow: var(--shadow-mana-card);
+}
+
+@media (min-width: 640px) {
+  .mana-events-archive-card {
+    flex-direction: row;
+    align-items: stretch;
+    min-height: 220px;
+  }
+}
+
+.mana-events-archive-poster {
+  display: block;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: var(--color-mana-warm);
+}
+
+@media (min-width: 640px) {
+  .mana-events-archive-poster {
+    width: min(38%, 220px);
+    max-width: 220px;
+    border-right: 1px solid color-mix(in srgb, var(--color-mana-fg) 6%, transparent);
+  }
+}
+
+.mana-events-archive-poster img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 200px;
+  object-fit: cover;
+  object-position: center top;
+  transition: transform 0.45s ease;
+}
+
+@media (min-width: 640px) {
+  .mana-events-archive-poster img {
+    min-height: 100%;
+    aspect-ratio: 459 / 650;
+  }
+}
+
+.mana-events-archive-poster:hover img {
+  transform: scale(1.03);
+}
+
+.mana-events-archive-poster--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  color: color-mix(in srgb, var(--color-mana-accent) 55%, transparent);
+  font-size: 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .mana-events-archive-poster--empty {
+    width: min(38%, 220px);
+    max-width: 220px;
+    min-height: 100%;
+  }
+}
+
+.mana-events-archive-datebar {
+  display: none;
+  flex-shrink: 0;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--color-mana-accent) 88%, #000 12%) 0%,
+    color-mix(in srgb, var(--color-mana-accent) 72%, var(--color-mana-tan) 28%) 100%
+  );
+  color: #fff;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  line-height: 1;
+}
+
+@media (min-width: 640px) {
+  .mana-events-archive-datebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.35rem;
+    width: 4.75rem;
+    padding: 1rem 0.5rem;
+  }
+}
+
+.mana-events-archive-date-month {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.mana-events-archive-date-day {
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 640px) {
+  .mana-events-archive-date-day {
+    font-size: 1.85rem;
+  }
+}
+
+.mana-events-archive-content {
+  flex: 1;
+  min-width: 0;
+  padding: 1.25rem 1.25rem 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .mana-events-archive-content {
+    padding: 1.35rem 1.5rem 1.5rem 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mana-events-archive-content {
+    padding: 1.5rem 1.75rem 1.75rem 1.35rem;
+  }
+}
+
+.mana-events-archive-item-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.65rem);
+  font-weight: 500;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mana-events-archive-item-title a {
+  color: color-mix(in srgb, var(--color-mana-fg) 88%, var(--color-mana-accent) 12%);
+  transition: color 0.2s ease;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mana-events-archive-item-title a:hover {
+  color: var(--color-mana-accent);
+}
+
+.mana-events-archive-date-badge {
+  display: block;
+  margin: 0 0 0.5rem;
+}
+
+.mana-events-archive-date-badge__pill {
+  display: inline-block;
+  padding: 0.3rem 0.7rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-mana-accent);
+  background: color-mix(in srgb, var(--color-mana-accent) 10%, #fff);
+  border: 1px solid color-mix(in srgb, var(--color-mana-accent) 22%, transparent);
+  border-radius: 9999px;
+}
+
+@media (min-width: 640px) {
+  .mana-events-archive-date-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .mana-events-archive-item-title a {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.mana-events-archive-meta {
+  margin-top: 0.55rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.55;
+  color: var(--color-mana-fg);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mana-events-archive-excerpt {
+  margin-top: 0.75rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--color-mana-subtle);
+  min-width: 0;
+}
+
+.mana-events-archive-excerpt__text {
+  display: block;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media (max-width: 639px) {
+  .mana-events-archive-excerpt__text {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.mana-events-archive-empty {
+  margin-top: 2rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-mana-subtle);
+  text-align: center;
+}
+
+.mana-events-archive-page-back {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .mana-events-archive-page-back {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mana-cms-related-card__thumb img {
+    transition: none;
+  }
+
+  .mana-cms-related-card__thumb:hover img {
+    transform: none;
+  }
+
+  .mana-events-archive-card {
+    transition: none;
+  }
+
+  .mana-events-archive-poster img {
+    transition: none;
+  }
+
+  .mana-events-archive-poster:hover img {
+    transform: none;
+  }
+}
+
+/* Pojedyncze wydarzenie — układ jak mana.org.pl/wydarzenia/… */
+.mana-event-detail {
+  background: var(--color-mana-warm);
+  overflow-x: clip;
+}
+
+.mana-event-detail-nav {
+  margin-bottom: 1.5rem;
+}
+
+.mana-event-detail-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-mana-accent);
+  transition: color 0.2s ease;
+}
+
+.mana-event-detail-back-link:hover {
+  color: var(--color-mana-fg);
+}
+
+/* Układ brochure-description jak mana.org.pl — plakat + treść w jednym rzędzie */
+.mana-event-brochure {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.5rem;
+  border: 1px solid color-mix(in srgb, var(--color-mana-fg) 8%, transparent);
+  border-radius: 0.5rem;
+  background: var(--color-mana-white);
+  box-shadow: var(--shadow-mana-soft);
+  padding: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .mana-event-brochure {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 1.75rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mana-event-brochure {
+    gap: 2.25rem;
+    padding: 2rem 2.25rem;
+  }
+}
+
+.mana-event-brochure__poster {
+  flex: 0 0 auto;
+  width: min(100%, 280px);
+  margin: 0;
+  align-self: center;
+}
+
+@media (min-width: 768px) {
+  .mana-event-brochure__poster {
+    width: 230px;
+    align-self: flex-start;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mana-event-brochure__poster {
+    width: 260px;
+  }
+}
+
+.mana-event-brochure__poster a {
+  display: block;
+  line-height: 0;
+}
+
+.mana-event-brochure__poster-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 460 / 650;
+  object-fit: cover;
+  object-position: center top;
+  box-shadow: 0 8px 28px -12px rgba(0, 0, 0, 0.22);
+}
+
+.mana-event-brochure__poster--empty {
+  display: flex;
+  aspect-ratio: 460 / 650;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed color-mix(in srgb, var(--color-mana-accent) 35%, transparent);
+  background: var(--color-mana-cream);
+  color: color-mix(in srgb, var(--color-mana-accent) 55%, transparent);
+  font-size: 2.5rem;
+}
+
+.mana-event-brochure__content {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+}
+
+.mana-event-brochure__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.8vw, 2rem);
+  font-weight: 300;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-mana-fg);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mana-event-brochure__meta {
+  margin-top: 0.75rem;
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-mana-subtle);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.mana-event-detail__mobile-nav {
+  display: none;
+}
+
+.mana-event-detail__meta-mobile {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .mana-event-detail.mana-section-pad {
+    padding-top: 3.25rem;
+    padding-bottom: 3.25rem;
+  }
+
+  .mana-event-detail__grid {
+    gap: 1rem;
+  }
+
+  .mana-event-detail__sidebar {
+    display: none;
+  }
+
+  .mana-event-detail__mobile-nav {
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .mana-event-detail__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-mana-accent);
+    transition: color 0.2s ease;
+  }
+
+  .mana-event-detail__back:hover {
+    color: var(--color-mana-fg);
+  }
+
+  .mana-event-brochure {
+    overflow: hidden;
+    gap: 0;
+    border: 1px solid color-mix(in srgb, var(--color-mana-fg) 6%, transparent);
+    border-radius: 0.625rem;
+    background: var(--color-mana-white);
+    box-shadow:
+      0 2px 16px -8px rgba(0, 0, 0, 0.08),
+      0 0 0 1px color-mix(in srgb, var(--color-mana-accent) 4%, transparent);
+  }
+
+  .mana-event-brochure__poster {
+    width: 100%;
+    max-height: none;
+    align-self: stretch;
+  }
+
+  .mana-event-brochure__poster-img {
+    width: 100%;
+    max-height: min(72vw, 420px);
+    aspect-ratio: auto;
+    height: auto;
+    object-fit: cover;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .mana-event-brochure__poster--empty {
+    aspect-ratio: 16 / 10;
+    max-height: min(72vw, 420px);
+    border-radius: 0;
+    background: linear-gradient(145deg, var(--color-mana-cream) 0%, var(--color-mana-warm) 100%);
+  }
+
+  .mana-event-brochure__content {
+    padding: 1.1rem 1.15rem 1.35rem;
+  }
+
+  .mana-event-detail__meta-mobile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 0.65rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .mana-event-detail__date-badge {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-mana-accent) 92%, #000 8%) 0%,
+      var(--color-mana-accent) 100%
+    );
+    border-radius: 9999px;
+    box-shadow: 0 2px 8px -4px color-mix(in srgb, var(--color-mana-accent) 50%, transparent);
+  }
+
+  .mana-event-detail__date-full,
+  .mana-event-detail__location {
+    font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-mana-muted);
+  }
+
+  .mana-event-detail__location::before {
+    content: "·";
+    margin-right: 0.65rem;
+    color: color-mix(in srgb, var(--color-mana-fg) 35%, transparent);
+  }
+
+  .mana-event-brochure__title {
+    font-size: clamp(1.375rem, 5.5vw, 1.75rem);
+    line-height: 1.28;
+  }
+
+  .mana-event-brochure__meta {
+    display: none;
+  }
+
+  .mana-event-brochure__content .mana-wp-content {
+    margin-top: 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-mana-muted);
+  }
+
+  .mana-event-detail .mana-share {
+    margin-top: 1.75rem;
+    padding-top: 1.25rem;
+  }
+
+  .mana-event-detail .mana-share-btn {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+
+  .mana-event-detail .mana-cms-related {
+    margin-top: 2rem;
+  }
+
+  .mana-event-detail .mana-cms-related-grid {
+    gap: 1rem;
+  }
+
+  .mana-event-detail .mana-cms-related-card {
+    flex-direction: row;
+    align-items: stretch;
+    overflow: hidden;
+    border-radius: 0.625rem;
+  }
+
+  .mana-event-detail .mana-cms-related-card__thumb {
+    flex: 0 0 108px;
+    width: 108px;
+    aspect-ratio: auto;
+    min-height: 100%;
+  }
+
+  .mana-event-detail .mana-cms-related-card__thumb img {
+    width: 100%;
+    height: 100%;
+    min-height: 120px;
+    object-fit: cover;
+  }
+
+  .mana-event-detail .mana-cms-related-card__body {
+    justify-content: center;
+    padding: 0.85rem 1rem;
+  }
+
+  .mana-event-detail .mana-cms-related-card__title {
+    font-size: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .mana-event-detail .mana-cms-related-card__title a {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+
+  .mana-event-detail .mana-cms-footer-cta {
+    margin-top: 2rem;
+  }
+}
+
+.mana-event-brochure__content .mana-wp-content {
+  margin-top: 1.25rem;
+}
+
+.mana-event-brochure__content .mana-wp-content > figure:first-child,
+.mana-event-brochure__content .mana-wp-content > .wp-block-image:first-child {
+  display: none;
+}
+
+.mana-event-share {
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid color-mix(in srgb, var(--color-mana-fg) 10%, transparent);
+}
+
+.mana-event-share-label {
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-mana-fg);
+}
+
+.mana-event-share-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 0.875rem;
+  padding: 0;
+  list-style: none;
+}
+
+.mana-event-share-btn {
+  display: inline-flex;
+  height: 2.5rem;
+  width: 2.5rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--color-mana-fg) 14%, transparent);
+  border-radius: 9999px;
+  background: #fff;
+  color: var(--color-mana-fg);
+  font-size: 0.95rem;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.mana-event-share-btn:hover {
+  border-color: var(--color-mana-accent);
+  background: var(--color-mana-ink);
+  color: #fff;
+}
+

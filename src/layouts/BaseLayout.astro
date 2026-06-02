@@ -1,0 +1,129 @@
+---
+import "../styles/mana.css";
+import { siteMeta } from "../data/gddHome";
+import ManaHeader from "../components/mana/ManaHeader.astro";
+import ManaFooter from "../components/mana/ManaFooter.astro";
+import CookieBanner from "../components/mana/CookieBanner.astro";
+import AsyncStylesheet from "../components/mana/AsyncStylesheet.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  canonicalPath?: string;
+  ogImage?: string;
+  mainClass?: string;
+  /** Preload URL for LCP image (homepage hero). */
+  lcpImage?: string;
+}
+
+const {
+  title,
+  description = siteMeta.siteDescription,
+  canonicalPath = Astro.url.pathname,
+  ogImage = "/og-default.jpg",
+  mainClass = "pt-0",
+  lcpImage,
+} = Astro.props;
+
+const GOOGLE_FONTS =
+  "https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Roboto:wght@300;400;700&display=swap";
+const FONTSHARE =
+  "https://api.fontshare.com/v2/css?f[]=melodrama@300,400,700&display=swap";
+const FONT_AWESOME =
+  "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css";
+
+const siteOrigin = Astro.site?.href?.replace(/\/$/, "") || siteMeta.siteUrl;
+const canonicalUrl = new URL(canonicalPath, siteOrigin).href;
+const fullTitle = `${title} | ${siteMeta.siteName}`;
+const ogImageUrl = new URL(ogImage, siteOrigin).href;
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "NGO",
+  name: siteMeta.siteName,
+  alternateName: siteMeta.siteSubtitle,
+  url: siteOrigin,
+  email: siteMeta.email,
+  description: siteMeta.siteDescription,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: siteMeta.addressLine1,
+    addressLocality: "Warszawa",
+    postalCode: "00-238",
+    addressCountry: "PL",
+  },
+  identifier: [
+    { "@type": "PropertyValue", name: "KRS", value: siteMeta.krs },
+    { "@type": "PropertyValue", name: "NIP", value: siteMeta.nip },
+    { "@type": "PropertyValue", name: "REGON", value: siteMeta.regon },
+  ],
+};
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <title>{fullTitle}</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:site_name" content={siteMeta.siteName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <script type="application/ld+json" set:html={JSON.stringify(organizationJsonLd)} />
+    {
+      lcpImage ? (
+        <link rel="preload" as="image" href={lcpImage} fetchpriority="high" type="image/webp" />
+      ) : null
+    }
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.fontshare.com" crossorigin />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <AsyncStylesheet href={GOOGLE_FONTS} />
+    <AsyncStylesheet href={FONTSHARE} crossorigin="anonymous" />
+    <AsyncStylesheet href={FONT_AWESOME} crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body class="antialiased">
+    <a href="#main-content" class="mana-skip-link" id="mana-skip-link">Przejdź do treści głównej</a>
+    <ManaHeader />
+    <main id="main-content" class={mainClass}>
+      <slot />
+    </main>
+    <ManaFooter />
+    <CookieBanner />
+    <script is:inline>
+      (function () {
+        var skip = document.getElementById("mana-skip-link");
+        var main = document.getElementById("main-content");
+        if (!skip || !main) return;
+        skip.addEventListener("click", function () {
+          main.setAttribute("tabindex", "-1");
+          main.focus({ preventScroll: false });
+          main.addEventListener(
+            "blur",
+            function onBlur() {
+              main.removeAttribute("tabindex");
+              main.removeEventListener("blur", onBlur);
+            },
+            { once: true },
+          );
+        });
+      })();
+    </script>
+  </body>
+</html>

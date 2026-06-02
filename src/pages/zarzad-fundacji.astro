@@ -1,0 +1,37 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaSubpageShell from "../components/mana/ManaSubpageShell.astro";
+import { foundationBoard, siteMeta } from "../data/gddHome";
+---
+
+<BaseLayout
+  title="Zarząd fundacji"
+  description="Zarząd Fundacji Gospoda Dobrego Dźwięku — Prezes, Wiceprezes i Sekretarz Fundacji."
+  canonicalPath="/zarzad-fundacji"
+>
+  <ManaSubpageShell
+    kicker="O nas"
+    title="Zarząd fundacji"
+    subtitle={`${siteMeta.siteName} · ${siteMeta.siteSubtitle}`}
+    bodyWidth="narrow"
+    class="mana-board-page"
+  >
+    <ul class="mana-board-list" role="list">
+      {
+        foundationBoard.map((member) => (
+          <li class:list={["mana-board-card", member.primary && "mana-board-card--primary"]}>
+            <span class="mana-board-card__role">{member.role}</span>
+            <h2 class="mana-board-card__name">{member.name}</h2>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="mana-board-links">
+      <a href="/dokumenty#statut" class="mana-board-links__item">Statut fundacji</a>
+      <a href="/dolacz-do-nas" class="mana-board-links__item">Dołącz do nas</a>
+      <a href="/dokumenty#dane-rejestrowe" class="mana-board-links__item">Dane rejestrowe</a>
+    </div>
+  </ManaSubpageShell>
+</BaseLayout>

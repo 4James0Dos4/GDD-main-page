@@ -1,0 +1,38 @@
+---
+export const prerender = true;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ManaLegalShell from "../components/mana/ManaLegalShell.astro";
+import { siteMeta } from "../data/gddHome";
+---
+
+<BaseLayout title="Polityka prywatności" canonicalPath="/polityka-prywatnosci">
+  <ManaLegalShell title="Polityka prywatności">
+    <p>{siteMeta.disclaimer}</p>
+    <h2>Zakres przetwarzania</h2>
+    <p>
+      Przetwarzamy dane niezbędne do realizacji zamówień (<strong>adres e-mail</strong>, dane płatności obsługiwane przez Stripe),
+      prowadzenia korespondencji oraz publikacji treści w serwisie.
+    </p>
+    <h2>Podmioty przetwarzające</h2>
+    <p>Korzystamy z następujących procesorów danych:</p>
+    <ul>
+      <li>
+        <strong><a href="https://stripe.com/privacy" class="mana-link" target="_blank" rel="noopener noreferrer">Stripe</a></strong>
+        — obsługa płatności (dane płatnicze i rozliczeniowe);
+        <a href="https://stripe.com/legal/dpa" class="mana-link" target="_blank" rel="noopener noreferrer">umowa powierzenia (DPA)</a>.
+      </li>
+      <li>
+        <strong><a href="https://resend.com/legal/privacy-policy" class="mana-link" target="_blank" rel="noopener noreferrer">Resend</a></strong>
+        — wysyłka wiadomości transakcyjnych z linkiem do pobrania;
+        <a href="https://resend.com/legal/dpa" class="mana-link" target="_blank" rel="noopener noreferrer">DPA</a>.
+      </li>
+      <li><strong>Dostawca hostingu serwisu</strong> — przechowywanie logów i plików aplikacji.</li>
+    </ul>
+    <h2>Prawa użytkownika</h2>
+    <p>
+      Przysługuje Ci prawo <strong>dostępu do danych</strong>, sprostowania, usunięcia, ograniczenia przetwarzania, sprzeciwu oraz skargi do <strong>UODO</strong>.
+      Kontakt: <a href={`mailto:${siteMeta.email}`} class="mana-link">{siteMeta.email}</a>.
+    </p>
+  </ManaLegalShell>
+</BaseLayout>
