@@ -2,7 +2,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { defineConfig } from "astro/config";
-import node from "@astrojs/node";
+import vercel from "@astrojs/vercel";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
 
@@ -59,7 +59,7 @@ export default defineConfig({
   site,
   output: "static",
   compressHTML: true,
-  adapter: node({ mode: "standalone" }),
+  adapter: vercel(),
   integrations: [sitemap()],
   image: {
     remotePatterns: wpRemotePatterns(env),
