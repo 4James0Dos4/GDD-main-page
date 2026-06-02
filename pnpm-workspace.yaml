@@ -1,0 +1,8 @@
+packages:
+  - .
+
+# pnpm v11+: allow build scripts for selected deps (non-interactive CI).
+allowBuilds:
+  esbuild: true
+  sharp: true
+
