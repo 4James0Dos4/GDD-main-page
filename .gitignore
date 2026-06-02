@@ -1,5 +1,8 @@
 node_modules/
-dist/
+# For shared hosting deploys we commit `dist/client/` (static output),
+# but keep the server bundle ignored.
+dist/server/
+dist/.astro/
 .astro/
 .env
 .data/

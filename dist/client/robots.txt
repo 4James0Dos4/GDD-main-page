@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.xn--gospoda-dobrego-dwiku-z0c24t.pl/sitemap-index.xml
