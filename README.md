@@ -25,6 +25,32 @@ pnpm start
 
 Domyślnie serwer nasłuchuje na porcie `4321` (zmienne `HOST` / `PORT` zgodnie z adapterem Node).
 
+## Deploy na Hostinger przez GitHub Actions (SSH)
+
+Jeśli Hostinger blokuje uruchamianie binarek podczas instalacji (np. `esbuild`/`sharp`), buduj projekt w GitHub Actions i wgrywaj gotowy output przez SSH.
+
+### Co jest wdrażane
+
+Workflow wysyła **statyczny output** z `dist/client/` do katalogu docelowego (np. `public_html/`).
+
+> Uwaga: endpointy `/api/*` (Stripe webhook, download, resend) wymagają procesu Node. Na shared hostingu zwykle nie zadziałają — do tego potrzebujesz VPS/Node runtime.
+
+### Sekrety w GitHub (Settings → Secrets and variables → Actions)
+
+W repo ustaw:
+
+- `SSH_HOST` (np. `1.2.3.4` albo `twoja-domena.pl`)
+- `SSH_PORT` (np. `22`)
+- `SSH_USER` (np. `u123456789`)
+- `SSH_PATH` (np. `/home/u123456789/domains/gdd.fyntrasoft.com/public_html`)
+- `SSH_PRIVATE_KEY` (klucz prywatny do SSH, najlepiej ed25519)
+- `PUBLIC_SITE_URL` (np. `https://gdd.fyntrasoft.com`)
+
+Opcjonalnie (tylko jeśli używasz WordPress w prod):
+
+- `WP_API_URL`
+- `PUBLIC_WP_SITE_URL`
+
 ### Checklist produkcyjny
 
 | Wymaganie | Opis |

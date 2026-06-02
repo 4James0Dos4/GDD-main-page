@@ -1,0 +1,67 @@
+name: Deploy to Hostinger (SSH)
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-hostinger-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "pnpm"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: "10"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        env:
+          # Needed for canonical URLs during build (sitemap, meta, etc.)
+          PUBLIC_SITE_URL: ${{ secrets.PUBLIC_SITE_URL }}
+          # Optional CMS settings (only if you use WordPress in prod)
+          WP_API_URL: ${{ secrets.WP_API_URL }}
+          PUBLIC_WP_SITE_URL: ${{ secrets.PUBLIC_WP_SITE_URL }}
+          WP_DEBUG_FETCH: "false"
+        run: pnpm run build
+
+      - name: Install rsync + ssh
+        run: sudo apt-get update && sudo apt-get install -y rsync openssh-client
+
+      - name: Add SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          printf "Host *\n  IdentityFile ~/.ssh/id_ed25519\n  StrictHostKeyChecking accept-new\n" > ~/.ssh/config
+
+      - name: Deploy (static) via rsync
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PATH: ${{ secrets.SSH_PATH }}
+        run: |
+          test -d dist/client
+          rsync -az --delete \
+            -e "ssh -p ${SSH_PORT}" \
+            dist/client/ \
+            "${SSH_USER}@${SSH_HOST}:${SSH_PATH}/"
+
