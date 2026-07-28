@@ -4,5 +4,6 @@ node_modules/
 dist/server/
 dist/.astro/
 .astro/
+.vercel/
 .env
 .data/
