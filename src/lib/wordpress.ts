@@ -70,10 +70,17 @@ type WpPost = {
   };
 };
 
-const DEFAULT_WP_API_URL = "http://localhost:8080/wp-json";
+const DEFAULT_WP_API_URL = "http://localhost:8081/wp-json";
 const MAX_WP_PER_PAGE = 100;
 
-const wpApiUrl = (import.meta.env.WP_API_URL || DEFAULT_WP_API_URL).replace(/\/$/, "");
+function resolveWpApiUrl(): string {
+  const fromProcess =
+    typeof process !== "undefined" ? process.env.WP_API_URL?.trim() : undefined;
+  const raw = fromProcess || import.meta.env.WP_API_URL || DEFAULT_WP_API_URL;
+  return raw.replace(/\/$/, "");
+}
+
+const wpApiUrl = resolveWpApiUrl();
 const debugWp = import.meta.env.WP_DEBUG_FETCH === "true";
 
 export function cmsEventPath(slug: string): string {

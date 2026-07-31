@@ -9,26 +9,78 @@ services:
       MYSQL_ROOT_PASSWORD: ${WORDPRESS_DB_ROOT_PASSWORD:-gdd_root_password}
     volumes:
       - wordpress_db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
 
   wordpress:
     image: wordpress:6.6-php8.2-apache
     restart: unless-stopped
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
-      - "${WORDPRESS_PORT:-8080}:80"
+      - "${WORDPRESS_PORT:-8081}:80"
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME:-gdd_wordpress}
       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER:-gdd_wp}
       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD:-gdd_wp_password}
       WORDPRESS_CONFIG_EXTRA: |
-        define('WP_DEBUG', true);
+        define('WP_DEBUG', false);
         define('WP_DEBUG_DISPLAY', false);
     volumes:
       - wordpress_html:/var/www/html
       - ./wordpress/mu-plugins:/var/www/html/wp-content/mu-plugins
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "php",
+          "-r",
+          "exit(@fsockopen('127.0.0.1', 80) ? 0 : 1);",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # W sieci Docker Astro woła WP po nazwie serwisu
+        WP_API_URL: http://wordpress/wp-json
+        PUBLIC_WP_SITE_URL: ${PUBLIC_WP_SITE_URL:-http://localhost:8081}
+        PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-http://localhost:4321}
+    restart: unless-stopped
+    depends_on:
+      wordpress:
+        condition: service_started
+    ports:
+      - "${WEB_PORT:-4321}:4321"
+    environment:
+      HOST: 0.0.0.0
+      PORT: 4321
+      WP_API_URL: http://wordpress/wp-json
+      PUBLIC_WP_SITE_URL: ${PUBLIC_WP_SITE_URL:-http://localhost:8081}
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-http://localhost:4321}
+      WP_DEBUG_FETCH: ${WP_DEBUG_FETCH:-false}
+      STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
+      STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}
+      STRIPE_PRICE_WPROWADZENIE_DZWIEKU: ${STRIPE_PRICE_WPROWADZENIE_DZWIEKU:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      EMAIL_FROM: ${EMAIL_FROM:-onboarding@resend.dev}
+      DOWNLOAD_TOKEN_TTL_HOURS: ${DOWNLOAD_TOKEN_TTL_HOURS:-48}
+    volumes:
+      - astro_data:/app/.data
+      - ./private/audiobooks:/app/private/audiobooks
 
 volumes:
   wordpress_db:
   wordpress_html:
+  astro_data:
