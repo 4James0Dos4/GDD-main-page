@@ -70,7 +70,7 @@ type WpPost = {
   };
 };
 
-const DEFAULT_WP_API_URL = "https://gospodadobregodzwieku.pl/wp-json";
+const DEFAULT_WP_API_URL = "https://administracja.gospodadobregodzwieku.pl/wp-json";
 const MAX_WP_PER_PAGE = 100;
 
 function resolveWpApiUrl(): string {

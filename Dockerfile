@@ -15,7 +15,7 @@ COPY . .
 
 # Nie ustawiaj VERCEL=1 — używamy adaptera Node (standalone).
 ARG WP_API_URL=http://wordpress/wp-json
-ARG PUBLIC_WP_SITE_URL=https://gospodadobregodzwieku.pl
+ARG PUBLIC_WP_SITE_URL=https://administracja.gospodadobregodzwieku.pl
 ARG PUBLIC_SITE_URL=https://gospodadobregodzwieku.pl
 ENV WP_API_URL=$WP_API_URL \
     PUBLIC_WP_SITE_URL=$PUBLIC_WP_SITE_URL \
