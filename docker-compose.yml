@@ -20,6 +20,13 @@ services:
     build:
       context: ./wordpress
       dockerfile: Dockerfile
+    # Kopiuj mu-pluginy z obrazu (/opt/mu-plugins) do volume przy kazdym
+    # starcie, zanim Apache wystartuje. Nie polegamy na pre.d (bywa
+    # ignorowany) ani na host-mountcie (montuje pusty katalog).
+    command:
+      - sh
+      - -c
+      - "cp -rf /opt/mu-plugins/. /var/www/html/wp-content/mu-plugins/ 2>/dev/null; exec docker-entrypoint.sh apache2-foreground"
     restart: unless-stopped
     depends_on:
       db:
