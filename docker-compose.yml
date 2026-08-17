@@ -49,6 +49,11 @@ services:
       start_period: 30s
 
   web:
+    # Serwer Node nasłuchuje na 4321 wewnątrz kontenera.
+    # Healthcheck musi badać TEN port przy użyciu narzędzia dostępnego
+    # w obrazie node (php nie istnieje w `node:22-bookworm-slim`).
+    # Błędny healthcheck (php + port 80) zawsze failuje -> Coolify widzi
+    # serwis jako unhealthy i nie wystawia go przez proxy ("no available server").
     build:
       context: .
       dockerfile: Dockerfile
@@ -61,6 +66,19 @@ services:
     depends_on:
       wordpress:
         condition: service_started
+    healthcheck:
+      # Node słucha na 4321 (nie na 80!) i to jest port badany przez proxy.
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "process.exit(require('net').connect(4321,'127.0.0.1').on('error',()=>process.exit(1)).on('connect',function(){this.end();process.exit(0);})?'0':'1')",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
     ports:
       - "${WEB_PORT:-4321}:4321"
     environment:
