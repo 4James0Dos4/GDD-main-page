@@ -60,8 +60,8 @@ services:
       args:
         # W sieci Docker Astro woła WP po nazwie serwisu
         WP_API_URL: http://wordpress/wp-json
-        PUBLIC_WP_SITE_URL: ${PUBLIC_WP_SITE_URL:-http://localhost:8081}
-        PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-http://localhost:4321}
+        PUBLIC_WP_SITE_URL: ${PUBLIC_WP_SITE_URL:-https://gospodadobregodzwieku.pl}
+        PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-https://gospodadobregodzwieku.pl}
     restart: unless-stopped
     depends_on:
       wordpress:
@@ -85,8 +85,8 @@ services:
       HOST: 0.0.0.0
       PORT: 4321
       WP_API_URL: http://wordpress/wp-json
-      PUBLIC_WP_SITE_URL: ${PUBLIC_WP_SITE_URL:-http://localhost:8081}
-      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-http://localhost:4321}
+      PUBLIC_WP_SITE_URL: ${PUBLIC_WP_SITE_URL:-https://gospodadobregodzwieku.pl}
+      PUBLIC_SITE_URL: ${PUBLIC_SITE_URL:-https://gospodadobregodzwieku.pl}
       WP_DEBUG_FETCH: ${WP_DEBUG_FETCH:-false}
       STRIPE_SECRET_KEY: ${STRIPE_SECRET_KEY:-}
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET:-}

@@ -19,7 +19,7 @@ export function getSiteOrigin(request?: Request): string {
     const url = new URL(request.url);
     return url.origin;
   }
-  return "http://localhost:4321";
+  return "https://gospodadobregodzwieku.pl";
 }
 
 export function getDownloadTokenTtlHours(): number {
