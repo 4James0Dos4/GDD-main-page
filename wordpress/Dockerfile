@@ -8,12 +8,14 @@ FROM wordpress:6.6-php8.2-apache
 COPY ./mu-plugins /opt/mu-plugins
 
 # Oficjalny obraz WordPress uruchamia skrypty z /docker-entrypoint-pre.d/
-# PRZED startem Apache. Volume wordpress_html jest już zamontowany, więc
-# kopiujemy mu-pluginy do niego przy każdym starcie (cp -n = nie nadpisuj
-# istniejących plików, idempotentne).
+# PRZED startem Apache (po zamontowaniu volume wordpress_html). Kopiujemy
+# mu-pluginy do volume przy każdym starcie. Shebang + log ułatwiają diagnozę.
 RUN mkdir -p /docker-entrypoint-pre.d \
  && printf '%s\n' \
+    '#!/bin/sh' \
+    'set -e' \
     'mkdir -p /var/www/html/wp-content/mu-plugins' \
-    'cp -rn /opt/mu-plugins/. /var/www/html/wp-content/mu-plugins/ 2>/dev/null || true' \
+    'cp -rf /opt/mu-plugins/. /var/www/html/wp-content/mu-plugins/' \
+    'echo "gdd mu-plugins init: $(ls /var/www/html/wp-content/mu-plugins)" > /tmp/mu-plugins-init.log' \
     > /docker-entrypoint-pre.d/10-mu-plugins.sh \
  && chmod +x /docker-entrypoint-pre.d/10-mu-plugins.sh
