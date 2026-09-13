@@ -24,7 +24,11 @@ function readEnvFile() {
     ) {
       value = value.slice(1, -1);
     }
-    merged[key] = value;
+    // Explicit deployment/build variables must win over values from a local
+    // .env file (Coolify supplies these as Docker build arguments).
+    if (process.env[key] === undefined) {
+      merged[key] = value;
+    }
   }
   return merged;
 }
