@@ -28,16 +28,16 @@ function formatPostDate(value: string): string {
     aria-hidden="true"
   />
   <div class="container relative mx-auto max-w-[1300px]">
-    <p class="mana-kicker mana-kicker--on-dark text-center">Blog i wiedza</p>
+    <p class="mana-kicker mana-kicker--on-dark text-center">Wiedza i inspiracje</p>
     <div class="mx-auto mt-4 h-px w-12 bg-white/25" aria-hidden="true"></div>
     <h2 class="mana-title mt-6 text-center text-[clamp(1.85rem,4vw,2.75rem)]">
-      Artykuły <span class="mana-title-accent">z CMS</span>
+      Artykuły <span class="mana-title-accent">fundacji</span>
     </h2>
     {
       articles.length ? (
         <>
           <p class="mana-prose-on-dark mx-auto mt-6 max-w-xl text-center">
-            Najnowsze materiały dodawane w panelu WordPress.
+            Dzielimy się wiedzą o muzyce i dźwięku oraz opowiadamy o naszych działaniach, projektach i wydarzeniach.
           </p>
           <div class="mt-14 grid gap-8 md:grid-cols-3">
             {articles.map((article) => {
