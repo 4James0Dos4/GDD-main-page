@@ -4,17 +4,17 @@ import { siteMeta } from "../data/gddHome";
 import { getDownloadTokenTtlHours } from "./stripeEnv";
 
 export function isResendConfigured(): boolean {
-  const key = import.meta.env.RESEND_API_KEY?.trim();
+  const key = (process.env.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY)?.trim();
   return !!key && !key.includes("REPLACE_ME");
 }
 
 function getResend(): Resend | null {
   if (!isResendConfigured()) return null;
-  return new Resend(import.meta.env.RESEND_API_KEY!.trim());
+  return new Resend((process.env.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY)!.trim());
 }
 
 function getFromAddress(): string {
-  const configured = import.meta.env.EMAIL_FROM?.trim();
+  const configured = (process.env.EMAIL_FROM ?? import.meta.env.EMAIL_FROM)?.trim();
   const address =
     configured && !configured.includes("REPLACE_ME")
       ? configured
@@ -41,11 +41,11 @@ export async function sendAudiobookDeliveryEmail(input: {
   const ttlHours = getDownloadTokenTtlHours();
   const ttlLabel = formatTtlLabel(ttlHours);
 
-  const subject = `Twój audiobook: ${input.product.title}`;
+  const subject = `Twoja publikacja: ${input.product.title}`;
   const text = [
     `Dziękujemy za zakup w ${siteMeta.siteName}.`,
     "",
-    `Audiobook: ${input.product.title}`,
+    `Publikacja: ${input.product.title}`,
     `Autor: ${input.product.author}`,
     "",
     `Link do pobrania (ważny ${ttlLabel}, jednorazowy):`,
@@ -62,7 +62,7 @@ export async function sendAudiobookDeliveryEmail(input: {
     <div style="font-family:Roboto,Arial,sans-serif;line-height:1.6;color:#1f2228;max-width:560px">
       <p>Dziękujemy za zakup w <strong>${siteMeta.siteName}</strong>.</p>
       <p><strong>${input.product.title}</strong><br>${input.product.author}</p>
-      <p><a href="${input.downloadUrl}" style="display:inline-block;padding:12px 20px;background:#1f2228;color:#fff;text-decoration:none;border-radius:6px">Pobierz audiobook</a></p>
+      <p><a href="${input.downloadUrl}" style="display:inline-block;padding:12px 20px;background:#1f2228;color:#fff;text-decoration:none;border-radius:6px">Pobierz publikację</a></p>
       <p style="font-size:13px;color:#454950">Link jest ważny przez <strong>${ttlLabel}</strong> i działa <strong>jednorazowo</strong>. Po pobraniu wygasa. Nie przekazuj linku dalej.</p>
       <p style="font-size:13px;color:#454950">Jeśli masz problem z pobraniem, napisz na <a href="mailto:${siteMeta.email}">${siteMeta.email}</a>.</p>
     </div>

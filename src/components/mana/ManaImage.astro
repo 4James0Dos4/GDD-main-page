@@ -31,7 +31,6 @@ const {
 } = Astro.props;
 
 const isImported = typeof src === "object" && src !== null && "format" in src;
-const inferSize = !isImported && (!width || !height);
 ---
 
 {
@@ -50,18 +49,15 @@ const inferSize = !isImported && (!width || !height);
       fetchpriority={fetchpriority}
     />
   ) : (
-    <Image
+    <img
       src={src}
       alt={alt}
       width={width}
       height={height}
-      inferSize={inferSize}
       loading={loading}
       decoding={decoding}
       class={className}
       sizes={sizes}
-      widths={widths}
-      quality={quality}
       fetchpriority={fetchpriority}
     />
   )

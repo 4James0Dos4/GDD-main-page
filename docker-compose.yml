@@ -104,7 +104,7 @@ services:
       DOWNLOAD_TOKEN_TTL_HOURS: ${DOWNLOAD_TOKEN_TTL_HOURS:-48}
     volumes:
       - astro_data:/app/.data
-      - ./private/audiobooks:/app/private/audiobooks
+      - /data/gdd-publications:/app/private/audiobooks:ro
 
 volumes:
   wordpress_db:

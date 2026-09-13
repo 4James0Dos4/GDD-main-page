@@ -49,3 +49,6 @@
   }
 }
 
+.mana-hero-cinematic h1, .mana-hero-cinematic p, .mana-hero-cinematic a, .mana-hero-cinematic .mana-vertical-mark { color: #f2efe8; }
+.mana-gallery-dark .mana-gallery-item img, .mana-gallery-dark .mana-gallery-item:hover img { filter: sepia(0.45) saturate(0.7); }
+a.mana-card:focus-visible { outline: 3px solid #7a532e; outline-offset: 5px; }

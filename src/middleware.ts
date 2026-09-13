@@ -14,7 +14,7 @@ async function maybeGzipResponse(request: Request, response: Response): Promise<
   if (!COMPRESSIBLE.test(type)) return response;
 
   try {
-    const body = Buffer.from(await response.arrayBuffer());
+    const body = Buffer.from(await response.clone().arrayBuffer());
     if (body.length < 512) return response;
 
     const compressed = gzipSync(body);

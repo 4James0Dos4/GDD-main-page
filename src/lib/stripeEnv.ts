@@ -1,5 +1,5 @@
 export function getStripeSecretKey(): string | undefined {
-  return import.meta.env.STRIPE_SECRET_KEY?.trim() || undefined;
+  return (process.env.STRIPE_SECRET_KEY ?? import.meta.env.STRIPE_SECRET_KEY)?.trim() || undefined;
 }
 
 /** Prawdziwy klucz z Dashboard — odrzuca puste wartości i placeholdery z .env.example */
@@ -9,11 +9,11 @@ export function isStripeSecretKeyConfigured(): boolean {
 }
 
 export function getStripeWebhookSecret(): string | undefined {
-  return import.meta.env.STRIPE_WEBHOOK_SECRET?.trim() || undefined;
+  return (process.env.STRIPE_WEBHOOK_SECRET ?? import.meta.env.STRIPE_WEBHOOK_SECRET)?.trim() || undefined;
 }
 
 export function getSiteOrigin(request?: Request): string {
-  const fromEnv = import.meta.env.PUBLIC_SITE_URL?.replace(/\/$/, "");
+  const fromEnv = (process.env.PUBLIC_SITE_URL ?? import.meta.env.PUBLIC_SITE_URL)?.replace(/\/$/, "");
   if (fromEnv) return fromEnv;
   if (request) {
     const url = new URL(request.url);

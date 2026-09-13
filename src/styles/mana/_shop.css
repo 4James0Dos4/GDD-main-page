@@ -7,7 +7,7 @@
 
 .mana-product-card__media {
   display: flex;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 690 / 1100;
   align-items: center;
   justify-content: center;
   background: var(--color-mana-fg);
@@ -79,16 +79,23 @@
 .mana-shop-grid {
   display: grid;
   gap: 2rem;
+  max-width: 760px;
+  margin-inline: auto;
 }
 
 @media (min-width: 768px) {
   .mana-shop-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 }
 
 @media (min-width: 1024px) {
   .mana-shop-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: 1fr;
   }
 }
+
+@media (min-width: 640px) {
+  .mana-product-card { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); }
+}
+.buy-audiobook:disabled { opacity: 0.65; cursor: not-allowed; }

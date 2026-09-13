@@ -69,7 +69,6 @@ export const navItems: NavItem[] = [
     label: "Warsztaty",
     children: [
       { label: "Oferta", href: "/oferta" },
-      { label: "Warsztaty Pro Tools", href: "/warsztaty-pro-tools" },
     ],
   },
   {
@@ -88,7 +87,7 @@ export const navItems: NavItem[] = [
       { label: "Blog", href: "/artykuly" },
     ],
   },
-  { label: "Audiobooki", href: "/audiobooki" },
+  { label: "E-booki", href: "/ebooki" },
 ];
 
 /** Spłaszczone linki — stopka, skróty mobilne. */
@@ -111,10 +110,9 @@ export const navAnchors = flattenNavItems();
 export const footerLinks = [
   { label: "Strona główna", href: "/" },
   { label: "Blog", href: "/artykuly" },
-  { label: "Audiobooki", href: "/audiobooki" },
+  { label: "E-booki", href: "/ebooki" },
   { label: "Wydarzenia", href: "/wydarzenia" },
   { label: "Oferta", href: "/oferta" },
-  { label: "Warsztaty Pro Tools", href: "/warsztaty-pro-tools" },
   { label: "mix/mastering", href: "/mix-mastering" },
   { label: "Numer konta", href: "/numer-konta-bankowego" },
   { label: "Dołącz do nas", href: "/dolacz-do-nas" },
@@ -146,14 +144,16 @@ export const homeHeroData = {
 
 export const homeOfferings = [
   {
-    title: "Warsztaty muzyczne",
-    location: "Pro Tools · online i stacjonarnie",
+    title: "Warsztaty",
+    href: "/oferta",
+    location: "Muzyka i DAW · online i stacjonarnie",
     description:
-      "Indywidualne i grupowe zajęcia: teoria, praca w DAW, montaż, produkcja muzyczna i materiały audiowizualne.",
+      "Indywidualne i grupowe zajęcia z muzyki, nagrywania, montażu i produkcji w DAW oraz realizacji dźwięku studyjnego i estradowego.",
     icon: "fa-music",
   },
   {
     title: "Mix / mastering · udźwiękawianie",
+    href: "/mix-mastering",
     location: "Studio · postprodukcja",
     description:
       "Profesjonalne wykończenie nagrań oraz dźwięk do reklam, filmów, prezentacji i form edukacyjnych.",
@@ -161,6 +161,7 @@ export const homeOfferings = [
   },
   {
     title: "Fundacja i społeczność",
+    href: "/dolacz-do-nas",
     location: "Warszawa · online",
     description:
       "Wspieramy warsztaty, projekty artystyczne i rozwój młodych twórców — niezależnie od możliwości finansowych.",
@@ -203,13 +204,15 @@ export const homeTimelineEvents = [
 export const homeGoalsFive = [
   ...homeOfferings.map((o) => ({
     kind: "offering" as const,
+    href: o.href,
     title: o.title,
     body: o.description,
     meta: o.location,
     icon: o.icon,
   })),
-  ...homeTimelineEvents.slice(0, 2).map((t) => ({
+  ...homeTimelineEvents.slice(0, 1).map((t) => ({
     kind: "timeline" as const,
+    href: "/zarzad-fundacji",
     title: t.title,
     body: t.description,
     meta: `${t.year} · ${t.tag}`,

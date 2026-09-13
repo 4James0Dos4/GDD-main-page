@@ -214,13 +214,13 @@ function linkAttrs(href: string, external?: boolean) {
     max-height: 2.75rem;
     object-fit: contain;
     image-rendering: auto;
-    filter: drop-shadow(0 1px 4px rgb(0 0 0 / 0.35));
+    filter: brightness(0) invert(95%) sepia(12%) saturate(260%) hue-rotate(350deg) drop-shadow(0 1px 4px rgb(0 0 0 / 0.35));
     transition: filter 0.2s ease;
   }
 
   .group:hover .mana-header-logo-mark :global(img),
   .group:focus-visible .mana-header-logo-mark :global(img) {
-    filter: drop-shadow(0 2px 8px rgb(0 0 0 / 0.4));
+    filter: brightness(0) invert(95%) sepia(12%) saturate(260%) hue-rotate(350deg) drop-shadow(0 2px 8px rgb(0 0 0 / 0.4));
   }
 
   @media (min-width: 640px) {

@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { createReadStream } from "node:fs";
+import { Readable } from "node:stream";
 import path from "node:path";
 import { stat } from "node:fs/promises";
 import { getAudiobookById } from "../../../data/audiobooks";
@@ -35,21 +36,12 @@ export const GET: APIRoute = async ({ params }) => {
   }
 
   const stream = createReadStream(filePath);
-  const webStream = new ReadableStream({
-    start(controller) {
-      stream.on("data", (chunk) => controller.enqueue(chunk));
-      stream.on("end", () => controller.close());
-      stream.on("error", (error) => controller.error(error));
-    },
-    cancel() {
-      stream.destroy();
-    },
-  });
+  const webStream = Readable.toWeb(stream) as ReadableStream;
 
   return new Response(webStream, {
     status: 200,
     headers: {
-      "Content-Type": "audio/mpeg",
+      "Content-Type": product.mimeType || "audio/mpeg",
       "Content-Disposition": `attachment; filename="${product.fileName}"`,
       "Cache-Control": "no-store",
     },

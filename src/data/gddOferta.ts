@@ -1,13 +1,13 @@
 export const ofertaPage = {
   kicker: "Warsztaty",
-  heroTitle: "„Dźwięk od kuchni”",
+  heroTitle: "Warsztaty muzyki i realizacji dźwięku",
   heroSubtitle:
-    "Warsztaty z zakresu realizacji dźwięku studyjnego i estradowego.",
-  dateLocation: "15–16 listopada 2025 r. · Warszawa",
+    "Od muzycznych podstaw po nagrania, produkcję w DAW i pracę na scenie.",
+  dateLocation: "Online i stacjonarnie · terminy ustalamy indywidualnie",
 
   introHighlights: [
-    "Zapraszamy na **dwudniowe warsztaty** z realizacji dźwięku w **Warszawie**.",
-    "**Kameralna grupa do 12 osób** — praktyczne umiejętności nagrywania i nagłośniania własnego materiału.",
+    "Zapraszamy na **indywidualne i grupowe warsztaty** muzyczne oraz zajęcia z realizacji dźwięku.",
+    "Poznaj nagrywanie, montaż, miks i produkcję w **DAW**, na przykład w Pro Tools. Program dopasowujemy do potrzeb uczestników.",
   ],
 
   whyHeading: "Dlaczego warto?",
@@ -16,8 +16,6 @@ export const ofertaPage = {
     "Doświadczeni prowadzący – wieloletnia praktyka w branży i w pracy pedagogicznej.",
     "Indywidualne podejście – kameralne grupy sprzyjają nauce.",
     "Wszechstronny program – od podstaw mikrofonów po miks i nagłośnienia.",
-    "Certyfikat uczestnictwa – potwierdzający zdobyte kompetencje.",
-    "Atrakcyjne rabaty – 50% zniżki na kolejne warsztaty i usługi, 15% zniżki przy zapisie grupowym.",
   ],
 
   audienceHeading: "Dla kogo?",
@@ -29,8 +27,8 @@ export const ofertaPage = {
 
   whenWhereHeading: "Kiedy i gdzie?",
   whenWhereItems: [
-    "**15–16 listopada 2025 r.**",
-    "**Warszawa** — dokładny adres zostanie podany po zapisaniu się na warsztaty",
+    "**Terminy, czas trwania i koszt** ustalamy po kontakcie.",
+    "**Online lub stacjonarnie** — miejsce oraz formę zajęć uzgadniamy z uczestnikami.",
   ],
 
   signupHeading: "Zapisz się teraz!",
