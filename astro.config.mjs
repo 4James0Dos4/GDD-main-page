@@ -61,7 +61,9 @@ const adapter = process.env.VERCEL ? vercel() : node({ mode: "standalone" });
 
 export default defineConfig({
   site,
-  output: "static",
+  // CMS-backed routes opt out of prerendering and must be rendered at request
+  // time, when the WordPress container is available on the Compose network.
+  output: "server",
   compressHTML: true,
   adapter,
   integrations: [sitemap()],
