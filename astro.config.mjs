@@ -57,8 +57,9 @@ function wpRemotePatterns(env) {
 }
 
 const env = readEnvFile();
-const site =
-  env.PUBLIC_SITE_URL || "https://gospodadobregodzwieku.pl";
+// This deployment has one canonical public origin. Keeping it explicit avoids
+// accidental localhost URLs when Coolify injects development-flavoured envs.
+const site = "https://gospodadobregodzwieku.pl";
 
 /** Vercel CI sets VERCEL=1; locally use Node for `astro preview` / `pnpm start`. */
 const adapter = process.env.VERCEL ? vercel() : node({ mode: "standalone" });
