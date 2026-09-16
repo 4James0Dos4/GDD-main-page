@@ -18,8 +18,8 @@ const ttlNote =
 
 type FulfillState =
   | { status: "idle" }
-  | { status: "ok"; emailNote: string }
-  | { status: "skipped"; emailNote: string }
+  | { status: "ok"; emailNote?: string; downloadUrl?: string }
+  | { status: "skipped"; emailNote?: string; downloadUrl?: string }
   | { status: "error"; message: string; showResendLink: boolean };
 
 let fulfill: FulfillState = { status: "idle" };
@@ -37,21 +37,15 @@ if (sessionId) {
       const session = await stripe.checkout.sessions.retrieve(sessionId);
       const result = await fulfillCheckoutSession(session, Astro.request);
 
-      if (result.ok && result.emailSent) {
-        const emailNote = result.skipped
-          ? "Link do pobrania wysłaliśmy ponownie na Twój e-mail."
-          : "Link do pobrania wysłaliśmy na adres e-mail podany przy płatności.";
+      if (result.ok) {
+        const emailNote = result.emailSent
+          ? (result.skipped
+              ? "Link do pobrania wysłaliśmy ponownie na Twój e-mail."
+              : "Link do pobrania wysłaliśmy na adres e-mail podany przy płatności.")
+          : undefined;
         fulfill = result.skipped
-          ? { status: "skipped", emailNote }
-          : { status: "ok", emailNote };
-      } else if (result.ok && !result.emailSent) {
-        fulfill = {
-          status: "error",
-          message:
-            result.emailError ||
-            "Nie udało się wysłać e-maila z linkiem. Skonfiguruj RESEND_API_KEY lub spróbuj ponownie.",
-          showResendLink: true,
-        };
+          ? { status: "skipped", emailNote, downloadUrl: result.downloadUrl }
+          : { status: "ok", emailNote, downloadUrl: result.downloadUrl };
       } else {
         fulfill = {
           status: "error",
@@ -76,10 +70,15 @@ if (sessionId) {
     {
       fulfill.status === "ok" || fulfill.status === "skipped" ? (
         <>
-          <p class="mana-prose mt-6">{fulfill.emailNote}</p>
+          <p class="mana-prose mt-6">Płatność została potwierdzona.</p>
+          {fulfill.downloadUrl ? (
+            <p class="mt-6">
+              <a href={fulfill.downloadUrl} class="mana-btn-solid inline-flex">Pobierz e-book</a>
+            </p>
+          ) : null}
+          {fulfill.emailNote ? <p class="mana-prose mt-4">{fulfill.emailNote}</p> : null}
           <p class="mana-prose mana-prose--muted mt-4">
-            Sprawdź skrzynkę odbiorczą oraz folder spam/oferty. Link jest ważny przez {ttlNote} i
-            działa jednorazowo — pobierz plik z wiadomości e-mail.
+            Link jest ważny przez {ttlNote} i działa jednorazowo. Zapisz plik na swoim urządzeniu.
           </p>
         </>
       ) : fulfill.status === "error" ? (

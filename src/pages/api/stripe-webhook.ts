@@ -34,10 +34,6 @@ export const POST: APIRoute = async ({ request }) => {
       console.error("[webhook:fulfill]", result.reason);
       return new Response(result.reason || "Fulfillment failed.", { status: 500 });
     }
-    if (!result.emailSent) {
-      console.error("[webhook:fulfill:email]", result.emailError);
-      return new Response(result.emailError || "Email delivery failed.", { status: 500 });
-    }
   }
 
   return new Response(JSON.stringify({ received: true }), {

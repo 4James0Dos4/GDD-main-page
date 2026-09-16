@@ -31,7 +31,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const priceId = resolveStripePriceId(product);
-    if (!product.amount && (!priceId || priceId.includes("REPLACE_ME"))) {
+    if (!priceId || priceId.includes("REPLACE_ME")) {
       return new Response(
         JSON.stringify({ error: "Skonfiguruj Stripe Price ID w pliku .env." }),
         { status: 503 },
@@ -43,11 +43,7 @@ export const POST: APIRoute = async ({ request }) => {
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      line_items: [product.amount ? {
-        price_data: { currency: "pln", unit_amount: product.amount,
-          product_data: { name: product.title, description: `${product.author} · PDF` } },
-        quantity: 1,
-      } : { price: priceId!, quantity: 1 }],
+      line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${origin}/sukces?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/anulowano`,
       customer_creation: "always",

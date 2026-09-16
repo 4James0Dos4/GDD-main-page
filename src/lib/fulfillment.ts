@@ -18,6 +18,7 @@ export type FulfillmentResult = {
   skipped?: boolean;
   emailSent?: boolean;
   emailError?: string;
+  downloadUrl?: string;
 };
 
 async function deliverByEmail(
@@ -73,15 +74,6 @@ export async function issueDownloadLinkAndEmail(input: {
     };
   }
 
-  if (!isResendConfigured()) {
-    return {
-      ok: false,
-      reason: "Skonfiguruj RESEND_API_KEY w pliku .env.",
-      emailSent: false,
-      emailError: "Skonfiguruj RESEND_API_KEY w pliku .env.",
-    };
-  }
-
   await deleteTokenBySessionId(input.sessionId);
 
   const origin = getSiteOrigin(input.request);
@@ -98,6 +90,10 @@ export async function issueDownloadLinkAndEmail(input: {
   }
 
   const downloadUrl = `${origin}/api/download/${plainToken}`;
+  if (!isResendConfigured()) {
+    return { ok: true, emailSent: false, downloadUrl };
+  }
+
   const delivery = await deliverByEmail(input.email, product, downloadUrl, input.sessionId);
 
   if (!delivery.emailSent) {
@@ -109,7 +105,7 @@ export async function issueDownloadLinkAndEmail(input: {
     };
   }
 
-  return { ok: true, emailSent: true };
+  return { ok: true, emailSent: true, downloadUrl };
 }
 
 export async function fulfillCheckoutSession(
@@ -133,6 +129,10 @@ export async function fulfillCheckoutSession(
     }
 
     const downloadUrl = `${origin}/api/download/${existing.plainToken}`;
+    if (!isResendConfigured()) {
+      return { ok: true, skipped: true, emailSent: false, downloadUrl };
+    }
+
     const delivery = await deliverByEmail(existing.email, product, downloadUrl, session.id);
 
     return {
@@ -141,6 +141,7 @@ export async function fulfillCheckoutSession(
       emailSent: delivery.emailSent,
       emailError: delivery.emailError,
       reason: delivery.emailSent ? undefined : delivery.emailError,
+      downloadUrl,
     };
   }
 

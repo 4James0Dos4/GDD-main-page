@@ -29,7 +29,7 @@ const available = await canPurchase(book);
         data-product-id={book.id}
         disabled={!available}
       >
-        {available ? "Kup e-book · 40 zł" : "Sprzedaż wkrótce"}
+        {available ? `Kup e-book · ${book.priceLabel}` : "Sprzedaż wkrótce"}
       </button>
     </div>
   </div>
