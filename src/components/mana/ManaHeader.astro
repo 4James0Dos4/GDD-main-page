@@ -83,16 +83,28 @@ function linkAttrs(href: string, external?: boolean) {
       }
     </nav>
 
-    <button
-      type="button"
-      id="mana-menu-trigger"
-      class="mana-menu-trigger cursor-pointer p-2 text-white lg:hidden"
-      aria-expanded="false"
-      aria-controls="mana-mobile-menu"
-      aria-label="Menu"
-    >
-      <i class="fa-solid fa-bars text-xl" aria-hidden="true"></i>
-    </button>
+    <div class="flex shrink-0 items-center gap-1.5">
+      <button
+        type="button"
+        id="mana-theme-trigger"
+        class="mana-theme-trigger"
+        aria-label="Włącz jasny motyw nagłówka"
+        aria-pressed="false"
+        title="Jasny motyw"
+      >
+        <i class="fa-regular fa-sun" aria-hidden="true"></i>
+      </button>
+      <button
+        type="button"
+        id="mana-menu-trigger"
+        class="mana-menu-trigger cursor-pointer p-2 text-white lg:hidden"
+        aria-expanded="false"
+        aria-controls="mana-mobile-menu"
+        aria-label="Menu"
+      >
+        <i class="fa-solid fa-bars text-xl" aria-hidden="true"></i>
+      </button>
+    </div>
   </div>
 
   <div
@@ -137,6 +149,35 @@ function linkAttrs(href: string, external?: boolean) {
 
 <script is:inline>
   (function () {
+    var root = document.documentElement;
+    var themeBtn = document.getElementById("mana-theme-trigger");
+    var themeMeta = document.getElementById("mana-theme-color");
+
+    function setHeaderTheme(light, persist) {
+      if (light) root.dataset.headerTheme = "light";
+      else delete root.dataset.headerTheme;
+      if (themeBtn) {
+        themeBtn.setAttribute("aria-pressed", light ? "true" : "false");
+        themeBtn.setAttribute("aria-label", light ? "Włącz ciemny motyw nagłówka" : "Włącz jasny motyw nagłówka");
+        themeBtn.setAttribute("title", light ? "Ciemny motyw" : "Jasny motyw");
+        var themeIcon = themeBtn.querySelector("i");
+        if (themeIcon) themeIcon.className = light ? "fa-regular fa-moon" : "fa-regular fa-sun";
+      }
+      if (themeMeta) themeMeta.setAttribute("content", light ? "#fbf8f0" : "#000000");
+      if (persist) {
+        try {
+          localStorage.setItem("gdd-header-theme", light ? "light" : "dark");
+        } catch (_) {}
+      }
+    }
+
+    setHeaderTheme(root.dataset.headerTheme === "light", false);
+    if (themeBtn) {
+      themeBtn.addEventListener("click", function () {
+        setHeaderTheme(root.dataset.headerTheme !== "light", true);
+      });
+    }
+
     var btn = document.getElementById("mana-menu-trigger");
     var menu = document.getElementById("mana-mobile-menu");
     if (!btn || !menu) return;
@@ -242,6 +283,96 @@ function linkAttrs(href: string, external?: boolean) {
 
   .mana-mobile-menu.mana-mobile-menu--open {
     visibility: visible;
+  }
+
+  .mana-theme-trigger {
+    display: inline-grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border: 1px solid rgb(255 255 255 / 0.28);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.07);
+    color: #f4ead8;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .mana-theme-trigger:hover,
+  .mana-theme-trigger:focus-visible {
+    border-color: rgb(255 255 255 / 0.55);
+    background: rgb(255 255 255 / 0.13);
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .mana-theme-trigger:focus-visible {
+    outline: 2px solid #e8c99a;
+    outline-offset: 3px;
+  }
+
+  :global(html[data-header-theme="light"]) .site-header {
+    border-color: rgb(31 34 40 / 0.12);
+    background: rgb(251 248 240 / 0.96);
+    box-shadow: 0 0.35rem 1.5rem rgb(31 34 40 / 0.1);
+    backdrop-filter: blur(14px);
+  }
+
+  :global(html[data-header-theme="light"]) .site-header :global(.text-white),
+  :global(html[data-header-theme="light"]) .site-header :global(.text-white\/90) {
+    color: #1f2228;
+  }
+
+  :global(html[data-header-theme="light"]) .site-header :global(.bg-white\/35) {
+    background-color: rgb(31 34 40 / 0.28);
+  }
+
+  :global(html[data-header-theme="light"]) .mana-theme-trigger {
+    border-color: rgb(31 34 40 / 0.2);
+    background: rgb(122 83 46 / 0.07);
+    color: #5c3d18;
+  }
+
+  :global(html[data-header-theme="light"]) .mana-theme-trigger:hover,
+  :global(html[data-header-theme="light"]) .mana-theme-trigger:focus-visible {
+    border-color: rgb(92 61 24 / 0.38);
+    background: rgb(122 83 46 / 0.12);
+    color: #3f2a12;
+  }
+
+  :global(html[data-header-theme="light"]) .mana-header-nav__link,
+  :global(html[data-header-theme="light"]) .mana-header-nav__trigger {
+    color: #272a30;
+  }
+
+  :global(html[data-header-theme="light"]) .mana-header-nav__link:hover,
+  :global(html[data-header-theme="light"]) .mana-header-nav__trigger:hover,
+  :global(html[data-header-theme="light"]) .mana-header-nav__dropdown.is-open .mana-header-nav__trigger {
+    background: rgb(122 83 46 / 0.1);
+    color: #5c3d18;
+  }
+
+  :global(html[data-header-theme="light"]) .mana-header-nav__submenu,
+  :global(html[data-header-theme="light"]) .mana-mobile-menu {
+    border-color: rgb(31 34 40 / 0.12);
+    background: rgb(251 248 240 / 0.98);
+    box-shadow: 0 0.8rem 2rem rgb(31 34 40 / 0.16);
+  }
+
+  :global(html[data-header-theme="light"]) .mana-header-nav__sublink,
+  :global(html[data-header-theme="light"]) .mana-mobile-nav__summary,
+  :global(html[data-header-theme="light"]) .mana-mobile-nav__sublink,
+  :global(html[data-header-theme="light"]) .mana-mobile-link {
+    border-color: rgb(31 34 40 / 0.1);
+    color: #35383f;
+  }
+
+  :global(html[data-header-theme="light"]) .mana-header-nav__sublink:hover,
+  :global(html[data-header-theme="light"]) .mana-mobile-nav__sublink:hover,
+  :global(html[data-header-theme="light"]) .mana-mobile-link:hover {
+    background: rgb(122 83 46 / 0.08);
+    color: #5c3d18;
   }
 
   .mana-header-nav__link,
