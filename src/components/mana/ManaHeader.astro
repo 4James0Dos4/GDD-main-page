@@ -88,7 +88,7 @@ function linkAttrs(href: string, external?: boolean) {
         type="button"
         id="mana-theme-trigger"
         class="mana-theme-trigger"
-        aria-label="Włącz jasny motyw nagłówka"
+        aria-label="Włącz jasny motyw strony"
         aria-pressed="false"
         title="Jasny motyw"
       >
@@ -158,7 +158,7 @@ function linkAttrs(href: string, external?: boolean) {
       else delete root.dataset.headerTheme;
       if (themeBtn) {
         themeBtn.setAttribute("aria-pressed", light ? "true" : "false");
-        themeBtn.setAttribute("aria-label", light ? "Włącz ciemny motyw nagłówka" : "Włącz jasny motyw nagłówka");
+        themeBtn.setAttribute("aria-label", light ? "Włącz ciemny motyw strony" : "Włącz jasny motyw strony");
         themeBtn.setAttribute("title", light ? "Ciemny motyw" : "Jasny motyw");
         var themeIcon = themeBtn.querySelector("i");
         if (themeIcon) themeIcon.className = light ? "fa-regular fa-moon" : "fa-regular fa-sun";

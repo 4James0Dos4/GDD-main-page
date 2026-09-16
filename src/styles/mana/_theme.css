@@ -52,3 +52,118 @@
 .mana-hero-cinematic h1, .mana-hero-cinematic p, .mana-hero-cinematic a, .mana-hero-cinematic .mana-vertical-mark { color: #f2efe8; }
 .mana-gallery-dark .mana-gallery-item img, .mana-gallery-dark .mana-gallery-item:hover img { filter: sepia(0.45) saturate(0.7); }
 a.mana-card:focus-visible { outline: 3px solid #7a532e; outline-offset: 5px; }
+
+/* Jasny wariant całej oprawy, uruchamiany przełącznikiem w nagłówku. */
+html[data-header-theme="light"] body {
+  background: #fbf8f0;
+}
+
+html[data-header-theme="light"] .mana-hero-cinematic {
+  background: #eee5d7 !important;
+}
+
+html[data-header-theme="light"] .mana-hero-media img {
+  filter: sepia(0.7) saturate(0.65) contrast(0.94) brightness(1.13);
+}
+
+html[data-header-theme="light"] .mana-hero-shade-bottom {
+  background: linear-gradient(to top, rgb(251 248 240 / 0.98), rgb(251 248 240 / 0.46) 58%, rgb(251 248 240 / 0.18)) !important;
+}
+
+html[data-header-theme="light"] .mana-hero-shade-side {
+  background: linear-gradient(to right, rgb(251 248 240 / 0.74), rgb(251 248 240 / 0.18), transparent) !important;
+}
+
+html[data-header-theme="light"] .mana-hero-copy {
+  padding: 1.1rem 1.2rem;
+  border: 1px solid rgb(255 255 255 / 0.62);
+  border-radius: 0.65rem;
+  background: rgb(255 252 245 / 0.7);
+  box-shadow: 0 1rem 3rem rgb(53 42 29 / 0.14);
+  backdrop-filter: blur(10px);
+}
+
+html[data-header-theme="light"] .mana-hero-cinematic h1,
+html[data-header-theme="light"] .mana-hero-cinematic p,
+html[data-header-theme="light"] .mana-hero-cinematic a,
+html[data-header-theme="light"] .mana-hero-cinematic .mana-vertical-mark {
+  color: #24262b !important;
+  text-shadow: 0 1px 12px rgb(255 255 255 / 0.88);
+}
+
+html[data-header-theme="light"] .mana-hero-cinematic a:first-child {
+  border-color: rgb(36 38 43 / 0.42) !important;
+  background: rgb(255 255 255 / 0.55) !important;
+}
+
+html[data-header-theme="light"] .mana-surface-dark {
+  background: linear-gradient(145deg, #f7f1e7 0%, #eee4d5 100%) !important;
+  color: #24262b !important;
+}
+
+html[data-header-theme="light"] .mana-surface-dark .mana-title,
+html[data-header-theme="light"] .mana-surface-dark .mana-title .mana-title-accent,
+html[data-header-theme="light"] .mana-surface-dark .mana-kicker--on-dark,
+html[data-header-theme="light"] .mana-surface-dark .mana-prose-on-dark {
+  color: #3f2a12 !important;
+}
+
+html[data-header-theme="light"] #artykuly article {
+  border-color: rgb(92 61 24 / 0.15) !important;
+  background: rgb(255 255 255 / 0.78) !important;
+  box-shadow: 0 1.5rem 4rem -2.5rem rgb(49 40 29 / 0.35) !important;
+}
+
+html[data-header-theme="light"] #artykuly article h3,
+html[data-header-theme="light"] #artykuly article p {
+  color: #303238 !important;
+}
+
+html[data-header-theme="light"] #artykuly article a {
+  color: #6b4724 !important;
+}
+
+html[data-header-theme="light"] .mana-btn-outline-light {
+  border-color: rgb(92 61 24 / 0.34);
+  background: rgb(255 255 255 / 0.44);
+  color: #5c3d18;
+}
+
+html[data-header-theme="light"] .mana-btn-outline-light:hover {
+  border-color: #7a532e;
+  background: #fff;
+  color: #5c3d18;
+}
+
+html[data-header-theme="light"] .mana-gallery-item {
+  box-shadow: 0 1rem 2.5rem -1.5rem rgb(49 40 29 / 0.35);
+}
+
+html[data-header-theme="light"] footer#kontakt {
+  border-color: rgb(92 61 24 / 0.14) !important;
+  background: linear-gradient(145deg, #f4ecdf 0%, #e8dcc9 100%) !important;
+  color: #36383d !important;
+}
+
+html[data-header-theme="light"] footer#kontakt h3,
+html[data-header-theme="light"] footer#kontakt p,
+html[data-header-theme="light"] footer#kontakt span,
+html[data-header-theme="light"] footer#kontakt a {
+  color: #45474d !important;
+}
+
+html[data-header-theme="light"] footer#kontakt a:hover,
+html[data-header-theme="light"] footer#kontakt .mana-footer-heading {
+  color: #5c3d18 !important;
+}
+
+html[data-header-theme="light"] footer#kontakt button {
+  border-color: rgb(92 61 24 / 0.25) !important;
+  color: #5c3d18 !important;
+}
+
+@media (min-width: 768px) {
+  html[data-header-theme="light"] .mana-hero-copy {
+    padding: 1.4rem 1.5rem;
+  }
+}
