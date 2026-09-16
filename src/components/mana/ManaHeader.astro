@@ -1,6 +1,6 @@
 ---
 import { siteMeta, navItems } from "../../data/gddHome";
-import logo from "../../assets/gdd-logo-original.avif";
+import logo from "../../assets/gdd-logo-transparent.png";
 import ManaImage from "./ManaImage.astro";
 
 function linkAttrs(href: string, external?: boolean) {
@@ -200,30 +200,24 @@ function linkAttrs(href: string, external?: boolean) {
 
 <style>
   .mana-header-logo-mark {
-    position: relative;
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
     height: 3rem;
     width: auto;
-    isolation: isolate;
-  }
-
-  .mana-header-logo-mark::before {
-    content: "";
-    position: absolute;
-    inset: -0.3rem -0.55rem;
-    z-index: -1;
-    border-radius: 999px;
-    background: radial-gradient(ellipse at center, #000 52%, rgb(0 0 0 / 0.78) 70%, transparent 100%);
-    filter: blur(2px);
+    box-sizing: border-box;
+    padding: 0.18rem 0.35rem;
+    border: 1px solid rgb(255 255 255 / 0.72);
+    border-radius: 0.8rem;
+    background: linear-gradient(135deg, #fff 0%, #fffaf0 58%, #f2e6cf 100%);
+    box-shadow: 0 0 0.8rem rgb(255 248 229 / 0.22), 0 0.2rem 0.65rem rgb(0 0 0 / 0.42);
   }
 
   .mana-header-logo-mark :global(img) {
     display: block;
     height: 100%;
     width: auto;
-    max-height: 3rem;
+    max-height: 100%;
     object-fit: contain;
     image-rendering: auto;
     filter: drop-shadow(0 1px 4px rgb(0 0 0 / 0.45));
@@ -242,7 +236,7 @@ function linkAttrs(href: string, external?: boolean) {
     }
 
     .mana-header-logo-mark :global(img) {
-      max-height: 3.5rem;
+      max-height: 100%;
     }
   }
 
