@@ -1,6 +1,6 @@
 ---
 import { siteMeta, navItems } from "../../data/gddHome";
-import logo from "../../assets/gdd-logo-header.png";
+import logo from "../../assets/gdd-logo-original.avif";
 import ManaImage from "./ManaImage.astro";
 
 function linkAttrs(href: string, external?: boolean) {
@@ -23,11 +23,11 @@ function linkAttrs(href: string, external?: boolean) {
         <ManaImage
           src={logo}
           alt=""
-          width={88}
-          height={93}
-          widths={[44, 88, 104]}
-          sizes="(min-width: 640px) 52px, 44px"
-          quality={82}
+          width={220}
+          height={232}
+          widths={[96, 120, 144]}
+          sizes="(min-width: 640px) 60px, 48px"
+          quality={90}
           loading="eager"
           decoding="async"
           fetchpriority="low"
@@ -200,36 +200,49 @@ function linkAttrs(href: string, external?: boolean) {
 
 <style>
   .mana-header-logo-mark {
+    position: relative;
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
-    height: 2.75rem;
+    height: 3rem;
     width: auto;
+    isolation: isolate;
+  }
+
+  .mana-header-logo-mark::before {
+    content: "";
+    position: absolute;
+    inset: -0.3rem -0.55rem;
+    z-index: -1;
+    border-radius: 999px;
+    background: radial-gradient(ellipse at center, #000 52%, rgb(0 0 0 / 0.78) 70%, transparent 100%);
+    filter: blur(2px);
   }
 
   .mana-header-logo-mark :global(img) {
     display: block;
     height: 100%;
     width: auto;
-    max-height: 2.75rem;
+    max-height: 3rem;
     object-fit: contain;
     image-rendering: auto;
-    filter: brightness(0) invert(95%) sepia(12%) saturate(260%) hue-rotate(350deg) drop-shadow(0 1px 4px rgb(0 0 0 / 0.35));
-    transition: filter 0.2s ease;
+    filter: drop-shadow(0 1px 4px rgb(0 0 0 / 0.45));
+    transition: filter 0.2s ease, transform 0.2s ease;
   }
 
   .group:hover .mana-header-logo-mark :global(img),
   .group:focus-visible .mana-header-logo-mark :global(img) {
-    filter: brightness(0) invert(95%) sepia(12%) saturate(260%) hue-rotate(350deg) drop-shadow(0 2px 8px rgb(0 0 0 / 0.4));
+    filter: drop-shadow(0 2px 8px rgb(0 0 0 / 0.55));
+    transform: scale(1.025);
   }
 
   @media (min-width: 640px) {
     .mana-header-logo-mark {
-      height: 3.25rem;
+      height: 3.5rem;
     }
 
     .mana-header-logo-mark :global(img) {
-      max-height: 3.25rem;
+      max-height: 3.5rem;
     }
   }
 
