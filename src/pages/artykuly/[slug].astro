@@ -10,6 +10,11 @@ import { siteMeta } from "../../data/gddHome";
 import { getRelatedWpArticles, getWpArticleBySlug } from "../../lib/wordpress";
 
 const { slug } = Astro.params;
+
+if (slug === "test") {
+  return Astro.redirect("/artykuly/dlaczego-dobry-dzwiek-ma-znaczenie", 301);
+}
+
 const article = slug ? await getWpArticleBySlug(slug) : null;
 
 if (!article) {
