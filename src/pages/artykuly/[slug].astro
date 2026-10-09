@@ -29,6 +29,27 @@ const primaryCategory = categoryPills[0]?.name;
 
 const siteOrigin = Astro.site?.href?.replace(/\/$/, "") || siteMeta.siteUrl;
 const shareUrl = new URL(article.link, siteOrigin).href;
+const articleImage = article.imageUrl
+  ? new URL(typeof article.imageUrl === "string" ? article.imageUrl : article.imageUrl.src, siteOrigin).href
+  : new URL("/og-default.jpg", siteOrigin).href;
+const articleJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: article.title,
+  description: article.excerpt,
+  image: [articleImage],
+  datePublished: article.date,
+  dateModified: article.date,
+  inLanguage: "pl-PL",
+  mainEntityOfPage: { "@type": "WebPage", "@id": shareUrl },
+  author: { "@type": "Organization", name: siteMeta.siteName, url: siteOrigin },
+  publisher: {
+    "@type": "Organization",
+    name: siteMeta.siteName,
+    url: siteOrigin,
+    logo: { "@type": "ImageObject", url: new URL("/favicon-192.png", siteOrigin).href },
+  },
+};
 ---
 
 <BaseLayout
@@ -36,6 +57,8 @@ const shareUrl = new URL(article.link, siteOrigin).href;
   description={article.excerpt}
   canonicalPath={article.link}
   ogImage={article.imageUrl || "/og-default.jpg"}
+  ogType="article"
+  jsonLd={articleJsonLd}
   mainClass="pt-24 md:pt-28"
 >
   <article class="mana-article-detail mana-cms-page mana-section-pad">

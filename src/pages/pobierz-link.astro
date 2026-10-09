@@ -9,7 +9,7 @@ const sessionIdFromQuery = Astro.url.searchParams.get("session_id")?.trim() ?? "
 const ttlHours = getDownloadTokenTtlHours();
 ---
 
-<BaseLayout title="Wyślij link ponownie" canonicalPath="/pobierz-link">
+<BaseLayout title="Wyślij link ponownie" canonicalPath="/pobierz-link" noindex>
   <ManaSubpageShell
     kicker="Sklep cyfrowy"
     title="Wyślij link do publikacji ponownie"

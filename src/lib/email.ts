@@ -100,3 +100,30 @@ export async function sendAudiobookDeliveryEmail(input: {
   console.info("[email:sent]", { to: input.to, id: result.data?.id });
   return { ok: true, mode: "resend" };
 }
+
+export async function sendWeeklySalesReportEmail(input: {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+}): Promise<{ ok: boolean; error?: string }> {
+  const resend = getResend();
+  if (!resend) {
+    return { ok: false, error: "Brak konfiguracji RESEND_API_KEY." };
+  }
+
+  const result = await resend.emails.send({
+    from: getFromAddress(),
+    to: input.to,
+    subject: input.subject,
+    text: input.text,
+    html: input.html,
+  });
+
+  if (result.error) {
+    return { ok: false, error: result.error.message || "Resend odrzucił raport." };
+  }
+
+  console.info("[weekly-report:sent]", { to: input.to, id: result.data?.id });
+  return { ok: true };
+}

@@ -27,13 +27,21 @@ export const POST: APIRoute = async ({ request }) => {
     return new Response("Nieprawidłowy podpis webhooka.", { status: 400 });
   }
 
-  if (event.type === "checkout.session.completed") {
+  if (
+    event.type === "checkout.session.completed" ||
+    event.type === "checkout.session.async_payment_succeeded"
+  ) {
     const session = event.data.object;
     const result = await fulfillCheckoutSession(session, request);
     if (!result.ok) {
       console.error("[webhook:fulfill]", result.reason);
       return new Response(result.reason || "Fulfillment failed.", { status: 500 });
     }
+  }
+
+  if (event.type === "checkout.session.async_payment_failed") {
+    const session = event.data.object;
+    console.warn("[webhook:async-payment-failed]", { sessionId: session.id });
   }
 
   return new Response(JSON.stringify({ received: true }), {

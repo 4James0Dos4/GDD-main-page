@@ -8,3 +8,4 @@ dist/.astro/
 .env
 .data/
 private/audiobooks/*.pdf
+.tmp-logo/

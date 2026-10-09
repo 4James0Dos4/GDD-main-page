@@ -10,6 +10,9 @@ import { formatEventBadge, formatEventMetaLine } from "../../lib/eventUtils";
 import { getRelatedWpEvents, getWpEventBySlug } from "../../lib/wordpress";
 
 const { slug } = Astro.params;
+if (slug === "test") {
+  return Astro.redirect("/wydarzenia/premiera-ebooka-instrumentalne-abc", 301);
+}
 const event = slug ? await getWpEventBySlug(slug) : null;
 
 if (!event) {
@@ -35,6 +38,28 @@ const metaLine = formatEventMetaLine(event.eventDate, event.eventLocation, event
 const badge = formatEventBadge(event.eventDate || event.date);
 const siteOrigin = Astro.site?.href?.replace(/\/$/, "") || siteMeta.siteUrl;
 const shareUrl = new URL(event.link, siteOrigin).href;
+const eventImage = event.imageUrl
+  ? new URL(typeof event.imageUrl === "string" ? event.imageUrl : event.imageUrl.src, siteOrigin).href
+  : new URL("/og-default.jpg", siteOrigin).href;
+const eventStartDate = event.eventDate || event.date;
+const eventJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: event.title,
+  description: event.excerpt,
+  startDate: eventStartDate,
+  eventStatus: "https://schema.org/EventScheduled",
+  eventAttendanceMode: event.eventLocation?.toLowerCase().includes("online")
+    ? "https://schema.org/OnlineEventAttendanceMode"
+    : "https://schema.org/OfflineEventAttendanceMode",
+  location: event.eventLocation
+    ? { "@type": "Place", name: event.eventLocation, address: event.eventLocation }
+    : { "@type": "Place", name: siteMeta.siteName, address: `${siteMeta.addressLine1}, ${siteMeta.addressLine2}` },
+  image: [eventImage],
+  url: shareUrl,
+  inLanguage: "pl-PL",
+  organizer: { "@type": "Organization", name: siteMeta.siteName, url: siteOrigin },
+};
 ---
 
 <BaseLayout
@@ -42,6 +67,7 @@ const shareUrl = new URL(event.link, siteOrigin).href;
   description={event.excerpt}
   canonicalPath={event.link}
   ogImage={event.imageUrl || "/og-default.jpg"}
+  jsonLd={eventJsonLd}
   mainClass="pt-24 md:pt-28"
 >
   <section class="mana-event-detail mana-cms-page mana-section-pad">

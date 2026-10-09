@@ -17,9 +17,9 @@ export const siteMeta = {
   siteMotto: "…bo naszą pasją jest piękny dźwięk",
   siteDescription:
     "Fundacja artystyczna Gospoda Dobrego Dźwięku — warsztaty muzyczne, realizacja dźwięku, mix i mastering, edukacja i wsparcie młodych twórców.",
-  siteUrl: "https://www.xn--gospoda-dobrego-dwiku-z0c24t.pl",
-  fullSiteUrl: "https://www.xn--gospoda-dobrego-dwiku-z0c24t.pl/",
-  siteDomainDisplay: "gospoda-dobrego-dźwięku.pl",
+  siteUrl: "https://gospodadobregodzwieku.pl",
+  fullSiteUrl: "https://gospodadobregodzwieku.pl/",
+  siteDomainDisplay: "gospodadobregodzwieku.pl",
   email: "G.D.D.biuro@gmail.com",
   contact: {
     phoneDisplay: "506 231 373",

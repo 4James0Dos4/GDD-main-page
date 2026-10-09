@@ -47,7 +47,16 @@ export const POST: APIRoute = async ({ request }) => {
       success_url: `${origin}/sukces?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/anulowano`,
       customer_creation: "always",
-      billing_address_collection: "auto",
+      billing_address_collection: "required",
+      tax_id_collection: { enabled: true },
+      custom_fields: [
+        {
+          key: "company_name",
+          label: { type: "custom", custom: "Nazwa firmy (opcjonalnie)" },
+          type: "text",
+          optional: true,
+        },
+      ],
       metadata: {
         product_id: product.id,
       },

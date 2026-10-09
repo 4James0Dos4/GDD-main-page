@@ -24,7 +24,13 @@ const [wpEvents, wpArticles, lcpHero] = await Promise.all([
 ]);
 ---
 
-<BaseLayout title="Strona główna" ogImage="/og-default.jpg" lcpImage={lcpHero.src}>
+<BaseLayout
+  title="Warsztaty muzyczne i realizacja dźwięku"
+  description="Fundacja Gospoda Dobrego Dźwięku w Warszawie: warsztaty muzyczne i DAW, realizacja dźwięku, mix, mastering oraz edukacja młodych twórców."
+  canonicalPath="/"
+  ogImage="/og-default.jpg"
+  lcpImage={lcpHero.src}
+>
   <ManaHero />
   <ManaGoalsGrid />
   <ManaEventsList events={wpEvents} />
